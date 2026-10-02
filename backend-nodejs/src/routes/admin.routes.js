@@ -1,0 +1,47 @@
+import { Router } from "express";
+import { authMiddleware } from "../middleware/auth.middleware.js";
+import { roleMiddleware } from "../middleware/role.middleware.js";
+import { validate } from "../middleware/validate.middleware.js";
+
+import { idSchema } from "../validation/common.validate.js";
+import {
+  updateRoleSchema,
+  userFilterSchema,
+} from "../validation/admin.validate.js";
+
+import {
+  getStats,
+  getUsers,
+  updateUserRole,
+  deleteUser,
+} from "../controller/admin.controller.js";
+
+const router = Router();
+
+const adminOnly = [authMiddleware, roleMiddleware("admin")];
+
+router.get("/stats", ...adminOnly, getStats);
+
+router.get(
+  "/users",
+  ...adminOnly,
+  validate(userFilterSchema, "query"),
+  getUsers,
+);
+
+router.patch(
+  "/users/:id/role",
+  ...adminOnly,
+  validate(idSchema, "params"),
+  validate(updateRoleSchema),
+  updateUserRole,
+);
+
+router.delete(
+  "/users/:id",
+  ...adminOnly,
+  validate(idSchema, "params"),
+  deleteUser,
+);
+
+export default router;
