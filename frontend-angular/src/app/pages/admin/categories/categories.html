@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="card">
+    <h1>Kategoriyalar</h1>
+    <form class="row" (ngSubmit)="create()">
+      <input
+        name="name"
+        [(ngModel)]="name"
+        placeholder="Yangi kategoriya"
+      /><button class="btn">Qo'shish</button>
+    </form>
+    <p class="error">{{error}}</p>
+    <table class="table">
+      <tr>
+        <th>ID</th>
+        <th>Nomi</th>
+        <th></th>
+      </tr>
+      <tr *ngFor="let c of categories">
+        <td>{{c.id}}</td>
+        <td>{{c.name}}</td>
+        <td>
+          <button class="btn danger" (click)="remove(c.id)">O'chirish</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,100 @@
+```html
+<div class="container" *ngIf="item">
+  <a routerLink="/items">← E'lonlar</a>
+
+  <div class="card">
+    <h1>{{ item.title }}</h1>
+
+    <p>{{ item.description }}</p>
+
+    <p>{{ item.location }} · {{ item.type }} · {{ item.status }}</p>
+
+    <p class="muted">Egasi: {{ item.owner_name || item.full_name || "-" }}</p>
+
+    <div class="row">
+      <a class="btn secondary" [routerLink]="['/items', item.id, 'edit']">
+        Tahrirlash
+      </a>
+
+      <button class="btn" (click)="close()">Yopish</button>
+    </div>
+  </div>
+
+  <p class="error" *ngIf="error">{{ error }}</p>
+
+  <p class="success" *ngIf="success">{{ success }}</p>
+
+  <section class="card">
+    <h2>Da'volar</h2>
+
+    <div *ngIf="claimList.length === 0">
+      <p>Hozircha da'volar yo'q.</p>
+    </div>
+
+    <div *ngFor="let c of claimList" class="claim">
+      <p>
+        <strong>
+          {{ c.full_name || c.claimant_name || "Foydalanuvchi" }}
+        </strong>
+      </p>
+
+      <p>
+        <strong>Xabar:</strong>
+        {{ c.message || "Xabar yozilmagan" }}
+      </p>
+
+      <p>
+        <strong>Javob:</strong>
+        {{ c.answer || "-" }}
+      </p>
+
+      <p>
+        <strong>Holat:</strong>
+        {{ c.status }}
+      </p>
+
+      <div class="row">
+        <button class="btn" (click)="approve(c.id)">Approve</button>
+
+        <button class="btn danger" (click)="reject(c.id)">Reject</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" *ngIf="item.type === 'found'">
+    <h2>Da'vo yuborish</h2>
+
+    <form class="form" (ngSubmit)="submitClaim()">
+      <label>
+        Maxfiy javob
+
+        <input name="answer" [(ngModel)]="answer" required />
+      </label>
+
+      <label>
+        Xabar
+
+        <textarea
+          name="message"
+          [(ngModel)]="message"
+          placeholder="Xabar yozing"
+        ></textarea>
+      </label>
+
+      <button class="btn" type="submit">Yuborish</button>
+    </form>
+  </section>
+
+  <section class="card" *ngIf="item.type === 'lost'">
+    <h2>Men topdim</h2>
+
+    <textarea [(ngModel)]="reportMessage" placeholder="Xabar"></textarea>
+
+    <button class="btn" type="button" (click)="report()">Xabar yuborish</button>
+  </section>
+</div>
+
+<div class="container" *ngIf="!item">
+  <p>Yuklanmoqda...</p>
+</div>
+```
