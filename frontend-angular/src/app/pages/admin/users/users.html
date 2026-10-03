@@ -1,1 +1,25 @@
-<div class="container"><div class="card"><h1>Foydalanuvchilar</h1><p>{{message}}</p><a href="/admin">Dashboard</a></div></div>
+<div class="container">
+  <!-- Navbar -->
+  <nav class="navbar" style="position: static; margin: -32px -24px 32px; padding: 0 24px; border-radius: 0 0 20px 20px;">
+    <a class="navbar-brand" routerLink="/items">🔍 TopFind</a>
+    <div class="navbar-links">
+      <a class="nav-link" routerLink="/admin">Dashboard</a>
+      <a class="nav-link" routerLink="/admin/categories">Kategoriyalar</a>
+      <a class="nav-link" routerLink="/admin/users" style="color:var(--accent);">Foydalanuvchilar</a>
+    </div>
+  </nav>
+
+  <div class="page-header animate-in">
+    <h1>👥 Foydalanuvchilar</h1>
+    <a class="back-link" routerLink="/admin">← Dashboard</a>
+  </div>
+
+  <div class="card animate-in animate-in-delay-1" style="text-align:center; padding:60px 40px;">
+    <div style="font-size:4rem; margin-bottom:20px; filter:drop-shadow(0 0 20px rgba(255,107,157,0.4));">👥</div>
+    <h2>Foydalanuvchilar paneli</h2>
+    <p class="muted mt-8" style="max-width:400px; margin:8px auto 0;">{{message}}</p>
+    <a class="btn pill" style="margin-top:28px;" routerLink="/admin">
+      ← Dashboardga qaytish
+    </a>
+  </div>
+</div>

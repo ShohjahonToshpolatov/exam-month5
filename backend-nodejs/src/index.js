@@ -18,7 +18,7 @@ if (!fs.existsSync(uploadsPath)) {
 }
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
-npapp.use("/uploads", express.static(uploadsPath));
+app.use("/uploads", express.static(uploadsPath));
 
 app.get("/", (req, res) => {
   res.json({

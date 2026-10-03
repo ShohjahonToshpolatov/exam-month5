@@ -1,27 +1,77 @@
 <div class="container">
-  <div class="card">
-    <h1>Kategoriyalar</h1>
-    <form class="row" (ngSubmit)="create()">
+  <!-- Navbar -->
+  <nav class="navbar" style="position: static; margin: -32px -24px 32px; padding: 0 24px; border-radius: 0 0 20px 20px;">
+    <a class="navbar-brand" routerLink="/items">🔍 TopFind</a>
+    <div class="navbar-links">
+      <a class="nav-link" routerLink="/admin">Dashboard</a>
+      <a class="nav-link" routerLink="/admin/categories" style="color:var(--secondary);">Kategoriyalar</a>
+      <a class="nav-link" routerLink="/admin/users">Foydalanuvchilar</a>
+    </div>
+  </nav>
+
+  <div class="page-header animate-in">
+    <h1>🏷️ Kategoriyalar</h1>
+    <a class="back-link" routerLink="/admin">← Dashboard</a>
+  </div>
+
+  <!-- Add category -->
+  <div class="card animate-in animate-in-delay-1" style="margin-bottom:28px;">
+    <h2 style="margin-bottom:16px;">➕ Yangi kategoriya</h2>
+    <form class="row" style="gap:12px;" (ngSubmit)="create()">
       <input
+        id="new-category-input"
         name="name"
         [(ngModel)]="name"
-        placeholder="Yangi kategoriya"
-      /><button class="btn">Qo'shish</button>
+        placeholder="Kategoriya nomi"
+        style="flex:1; min-width:200px;"
+        required
+      />
+      <button id="add-category-btn" class="btn pill" type="submit">
+        + Qo'shish
+      </button>
     </form>
     <p class="error">{{error}}</p>
-    <table class="table">
-      <tr>
-        <th>ID</th>
-        <th>Nomi</th>
-        <th></th>
-      </tr>
-      <tr *ngFor="let c of categories">
-        <td>{{c.id}}</td>
-        <td>{{c.name}}</td>
-        <td>
-          <button class="btn danger" (click)="remove(c.id)">O'chirish</button>
-        </td>
-      </tr>
+  </div>
+
+  <!-- Categories table -->
+  <div class="card animate-in animate-in-delay-2">
+    <h2 style="margin-bottom:20px;">📋 Barcha kategoriyalar</h2>
+
+    <div class="empty-state" *ngIf="categories.length === 0">
+      <div class="empty-icon">🏷️</div>
+      <p>Hali kategoriyalar yo'q</p>
+    </div>
+
+    <table class="table" *ngIf="categories.length > 0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nomi</th>
+          <th style="text-align:right;">Amal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of categories" id="category-row-{{c.id}}">
+          <td>
+            <span style="background:var(--glass-2); border:1px solid var(--glass-border); border-radius:6px; padding:3px 10px; font-size:0.8rem; font-family:monospace;">
+              #{{c.id}}
+            </span>
+          </td>
+          <td style="font-weight:500; color:var(--text-primary);">
+            🏷️ {{c.name}}
+          </td>
+          <td style="text-align:right;">
+            <button
+              class="btn danger"
+              style="padding:7px 14px; font-size:0.82rem;"
+              id="delete-cat-{{c.id}}"
+              (click)="remove(c.id)"
+            >
+              🗑️ O'chirish
+            </button>
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </div>

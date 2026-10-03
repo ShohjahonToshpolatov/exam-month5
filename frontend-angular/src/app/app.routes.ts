@@ -1,6 +1,7 @@
 import { Routes } from "@angular/router";
 import { authGuard } from "./core/guards/auth.guard";
 import { adminGuard } from "./core/guards/admin.guard";
+import { Home } from "./pages/home/home";
 import { Login } from "./pages/auth/login/login";
 import { Register } from "./pages/auth/register/register";
 import { Verify } from "./pages/auth/verify/verify";
@@ -17,7 +18,7 @@ import { Users } from "./pages/admin/users/users";
 import { Categories } from "./pages/admin/categories/categories";
 
 export const routes: Routes = [
-  { path: "", redirectTo: "items", pathMatch: "full" },
+  { path: "", component: Home },
   { path: "login", component: Login },
   { path: "register", component: Register },
   { path: "verify", component: Verify },

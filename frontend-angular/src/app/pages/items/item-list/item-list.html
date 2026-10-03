@@ -1,1 +1,139 @@
-<div class="container"><div class="row"><h1>Topildi</h1><a class="btn" routerLink="/items/create">+ E'lon berish</a><a routerLink="/claims">Da'volarim</a><a routerLink="/profile">Profil</a></div><div class="card form"><div class="grid grid-3"><input [(ngModel)]="search" placeholder="Qidirish"><select [(ngModel)]="type"><option value="">Barchasi</option><option value="lost">Yo'qolgan</option><option value="found">Topilgan</option></select><select [(ngModel)]="category_id"><option value="">Kategoriya</option><option *ngFor="let c of categories" [value]="c.id">{{c.name}}</option></select></div><div class="row"><button class="btn" (click)="load()">Qidirish</button><button class="btn secondary" (click)="reset()">Tozalash</button></div></div><p class="error">{{error}}</p><p *ngIf="loading">Yuklanmoqda...</p><div class="grid grid-3"><article class="card" *ngFor="let item of items"><h3>{{item.title}}</h3><p>{{item.description}}</p><p class="muted">{{item.location}} · {{item.type}}</p><a class="btn" [routerLink]="['/items',item.id]">Ko'rish</a></article></div><div class="row"><button class="btn secondary" (click)="prev()" [disabled]="page===1">‹ Oldingi</button><span>{{page}}</span><button class="btn secondary" (click)="next()" [disabled]="items.length<limit">Keyingi ›</button></div></div>
+<div class="container">
+  <!-- Navbar -->
+  <nav class="navbar" style="position: static; margin: -32px -24px 32px; padding: 0 24px; border-radius: 0 0 20px 20px;">
+    <a class="navbar-brand" routerLink="/items">🔍 TopFind</a>
+    <div class="navbar-links">
+      <a class="nav-link" routerLink="/items/create">+ E'lon</a>
+      <a class="nav-link" routerLink="/claims">Da'volarim</a>
+      <a class="nav-link" routerLink="/profile">Profil</a>
+      <a class="nav-link" routerLink="/admin" style="color: var(--warning);">Admin</a>
+    </div>
+  </nav>
+
+  <!-- Hero Header -->
+  <div class="page-header animate-in">
+    <div>
+      <h1>🗺️ E'lonlar</h1>
+      <p class="muted mt-8">Yo'qolgan va topilgan buyumlarni qidiring</p>
+    </div>
+    <a class="btn pill" routerLink="/items/create" id="create-item-btn">
+      ✨ Yangi E'lon
+    </a>
+  </div>
+
+  <!-- Search & Filter -->
+  <div class="search-box animate-in animate-in-delay-1">
+    <div class="grid grid-3">
+      <label style="display:grid; gap:6px; font-size:0.8rem; font-weight:500; color:var(--text-muted); letter-spacing:0.5px; text-transform:uppercase;">
+        Qidirish
+        <input
+          id="search-input"
+          [(ngModel)]="search"
+          placeholder="🔍 Kalit so'z kiriting..."
+        />
+      </label>
+      <label style="display:grid; gap:6px; font-size:0.8rem; font-weight:500; color:var(--text-muted); letter-spacing:0.5px; text-transform:uppercase;">
+        Turi
+        <select id="type-filter" [(ngModel)]="type">
+          <option value="">📋 Barchasi</option>
+          <option value="lost">❌ Yo'qolgan</option>
+          <option value="found">✅ Topilgan</option>
+        </select>
+      </label>
+      <label style="display:grid; gap:6px; font-size:0.8rem; font-weight:500; color:var(--text-muted); letter-spacing:0.5px; text-transform:uppercase;">
+        Kategoriya
+        <select id="category-filter" [(ngModel)]="category_id">
+          <option value="">🏷️ Hammasi</option>
+          <option *ngFor="let c of categories" [value]="c.id">{{c.name}}</option>
+        </select>
+      </label>
+    </div>
+    <div class="row mt-16">
+      <button class="btn pill" id="search-btn" (click)="load()">
+        🔍 Qidirish
+      </button>
+      <button class="btn secondary pill" id="reset-btn" (click)="reset()">
+        🔄 Tozalash
+      </button>
+    </div>
+  </div>
+
+  <!-- Error -->
+  <p class="error" *ngIf="error">{{error}}</p>
+
+  <!-- Loading -->
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div>
+    <span>Yuklanmoqda...</span>
+  </div>
+
+  <!-- Items Grid -->
+  <div class="grid grid-3 animate-in animate-in-delay-2" *ngIf="!loading">
+    <article
+      class="item-card"
+      *ngFor="let item of items"
+      [routerLink]="['/items', item.id]"
+      id="item-{{item.id}}"
+    >
+      <!-- Type Badge -->
+      <span
+        class="badge"
+        [class.badge-lost]="item.type === 'lost'"
+        [class.badge-found]="item.type === 'found'"
+      >
+        <span *ngIf="item.type === 'lost'">❌ Yo'qolgan</span>
+        <span *ngIf="item.type === 'found'">✅ Topilgan</span>
+      </span>
+
+      <!-- Card shimmer line -->
+      <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(108,99,255,0.5),transparent);opacity:0;transition:0.3s;" class="card-shimmer"></div>
+
+      <h3 style="padding-right: 90px;">{{item.title}}</h3>
+      <p>{{item.description || 'Tavsif mavjud emas'}}</p>
+
+      <div class="meta">
+        <span>📍 {{item.location || 'Joylashuv noma\'lum'}}</span>
+        <span *ngIf="item.status">
+          · <span
+            class="badge"
+            [class.badge-active]="item.status === 'active'"
+            [class.badge-closed]="item.status === 'closed'"
+            style="font-size:0.7rem; padding:2px 8px;"
+          >{{item.status}}</span>
+        </span>
+      </div>
+
+      <button class="btn pill" style="width:100%; font-size:0.85rem; padding:9px 16px;">
+        Ko'rish →
+      </button>
+    </article>
+
+    <!-- Empty state -->
+    <div class="empty-state" *ngIf="items.length === 0" style="grid-column: 1 / -1;">
+      <div class="empty-icon">🔍</div>
+      <p>Hech qanday e'lon topilmadi</p>
+      <p class="muted mt-8">Boshqa kalit so'z yoki filtrlarni sinab ko'ring</p>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination animate-in animate-in-delay-3">
+    <button
+      class="btn secondary"
+      id="prev-btn"
+      (click)="prev()"
+      [disabled]="page === 1"
+    >
+      ‹ Oldingi
+    </button>
+    <div class="page-num">{{page}}</div>
+    <button
+      class="btn secondary"
+      id="next-btn"
+      (click)="next()"
+      [disabled]="items.length < limit"
+    >
+      Keyingi ›
+    </button>
+  </div>
+</div>

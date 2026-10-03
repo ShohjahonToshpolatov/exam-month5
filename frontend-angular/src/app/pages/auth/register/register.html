@@ -1,1 +1,186 @@
-<div class="box"><h1>Ro'yxatdan o'tish</h1><form class="form" (ngSubmit)="submit()"><label>Ism<input name="full_name" [(ngModel)]="full_name" required></label><label>Email<input name="email" type="email" [(ngModel)]="email" required></label><label>Telefon<input name="phone" [(ngModel)]="phone" placeholder="+998901234567" required></label><label>Parol<input name="password" type="password" [(ngModel)]="password" required></label><button class="btn">Ro'yxatdan o'tish</button></form><p class="error">{{error}}</p><a routerLink="/login">Kirish</a></div>
+<!-- ===== SPLIT SCREEN REGISTER ===== -->
+<div class="login-page">
+
+  <!-- LEFT PANEL -->
+  <div class="login-left">
+    <div class="mesh-bg"></div>
+    <div class="floating-icons">
+      <div class="fi fi-1">✨</div>
+      <div class="fi fi-2">🚀</div>
+      <div class="fi fi-3">🔐</div>
+      <div class="fi fi-4">🎯</div>
+      <div class="fi fi-5">🌟</div>
+    </div>
+
+    <a class="l-brand" routerLink="/">
+      <span class="l-brand-icon">🔍</span>
+      TopFind
+    </a>
+
+    <div class="left-content">
+      <div class="l-tagline">
+        <h2>Birlashing va<br><span>imkoniyatdan foydalaning</span></h2>
+        <p>Minglab foydalanuvchilar allaqachon TopFind orqali yo'qolgan narsalarini topdi.</p>
+      </div>
+
+      <!-- Steps -->
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div>
+            <div class="step-title">Ro'yxatdan o'ting</div>
+            <div class="step-desc">30 soniyada hisob yarating</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div>
+            <div class="step-title">E'lon joylashtiring</div>
+            <div class="step-desc">Yo'qolgan yoki topilgan buyumni qo'shing</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div>
+            <div class="step-title">Bog'laning</div>
+            <div class="step-desc">Xavfsiz tizim orqali ega bilan muloqot qiling</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="l-stats">
+      <div class="ls"><strong>30s</strong><span>Ro'yxatdan o'tish</span></div>
+      <div class="ls-sep"></div>
+      <div class="ls"><strong>Bepul</strong><span>Har doim</span></div>
+      <div class="ls-sep"></div>
+      <div class="ls"><strong>100%</strong><span>Xavfsiz</span></div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL: REGISTER FORM -->
+  <div class="login-right">
+    <div class="login-form-wrap">
+
+      <div class="lf-header">
+        <div class="lf-icon-wrap">
+          <div class="lf-icon" style="background:linear-gradient(135deg,#00d9ff,#0099bb);">🚀</div>
+          <div class="lf-icon-glow" style="background:rgba(0,217,255,0.2);"></div>
+        </div>
+        <h1>Hisob yaratish</h1>
+        <p>Bir daqiqa vaqt sarflang va boshlang</p>
+      </div>
+
+      <form class="lf-form" (ngSubmit)="submit()">
+        <!-- Full name -->
+        <div class="lf-field" [class.focused]="nameFocused" [class.has-value]="full_name">
+          <label class="lf-label">To'liq ism</label>
+          <div class="lf-input-wrap">
+            <svg class="lf-icon-field" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+            <input
+              id="reg-fullname"
+              name="full_name"
+              [(ngModel)]="full_name"
+              placeholder="Ism Familiya"
+              (focus)="nameFocused=true"
+              (blur)="nameFocused=false"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="lf-field" [class.focused]="emailFocused" [class.has-value]="email">
+          <label class="lf-label">Email manzil</label>
+          <div class="lf-input-wrap">
+            <svg class="lf-icon-field" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
+            <input
+              id="reg-email"
+              name="email"
+              type="email"
+              [(ngModel)]="email"
+              placeholder="email@misol.uz"
+              (focus)="emailFocused=true"
+              (blur)="emailFocused=false"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Phone -->
+        <div class="lf-field" [class.focused]="phoneFocused" [class.has-value]="phone">
+          <label class="lf-label">Telefon raqam</label>
+          <div class="lf-input-wrap">
+            <svg class="lf-icon-field" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            <input
+              id="reg-phone"
+              name="phone"
+              [(ngModel)]="phone"
+              placeholder="+998 90 123 45 67"
+              (focus)="phoneFocused=true"
+              (blur)="phoneFocused=false"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="lf-field" [class.focused]="passFocused" [class.has-value]="password">
+          <label class="lf-label">Parol</label>
+          <div class="lf-input-wrap">
+            <svg class="lf-icon-field" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <input
+              id="reg-password"
+              name="password"
+              [type]="showPass ? 'text' : 'password'"
+              [(ngModel)]="password"
+              placeholder="Kuchli parol kiriting"
+              (focus)="passFocused=true"
+              (blur)="passFocused=false"
+              required
+            />
+            <button type="button" class="lf-eye" (click)="showPass=!showPass" tabindex="-1">
+              <svg *ngIf="!showPass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+              <svg *ngIf="showPass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <p class="lf-error" *ngIf="error">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          {{error}}
+        </p>
+
+        <button id="reg-btn" class="lf-submit" type="submit" style="background:linear-gradient(135deg,#00d9ff,#0099bb); box-shadow:0 8px 32px rgba(0,217,255,0.35);">
+          <span class="lf-submit-text">
+            Ro'yxatdan o'tish
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </span>
+        </button>
+      </form>
+
+      <div class="lf-divider"><span>yoki</span></div>
+      <div class="lf-bottom">
+        Hisobingiz bormi?
+        <a routerLink="/login" class="lf-reg-link">Kirish →</a>
+      </div>
+    </div>
+  </div>
+
+</div>

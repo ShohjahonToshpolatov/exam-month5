@@ -1,1 +1,54 @@
-<div class="box"><h1>Email tasdiqlash</h1><form class="form" (ngSubmit)="submit()"><label>Email<input name="email" [(ngModel)]="email" required></label><label>6 xonali kod<input name="code" [(ngModel)]="code" maxlength="6" required></label><button class="btn">Tasdiqlash</button></form><button class="btn secondary" (click)="resend()">Kodni qayta yuborish</button><p class="error">{{error}}</p><p class="success">{{message}}</p></div>
+<div class="auth-page">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="box">
+    <div class="text-center mb-24">
+      <div style="font-size:2.5rem; margin-bottom:8px; filter: drop-shadow(0 0 20px rgba(0,229,160,0.6));">📧</div>
+      <h1>Email tasdiqlash</h1>
+      <p class="subtitle">Emailingizga yuborilgan kodni kiriting</p>
+    </div>
+
+    <form class="form" (ngSubmit)="submit()">
+      <label>
+        Email manzil
+        <input
+          id="verify-email"
+          name="email"
+          [(ngModel)]="email"
+          placeholder="email@misol.uz"
+          required
+        />
+      </label>
+
+      <label>
+        Tasdiqlash kodi (6 xona)
+        <input
+          id="verify-code"
+          name="code"
+          [(ngModel)]="code"
+          maxlength="6"
+          placeholder="______"
+          required
+          style="letter-spacing: 8px; font-size: 1.2rem; font-weight: 700; text-align: center;"
+        />
+      </label>
+
+      <p class="error">{{error}}</p>
+      <p class="success">{{message}}</p>
+
+      <button id="verify-btn" class="btn w-full" type="submit">
+        ✅ Tasdiqlash
+      </button>
+
+      <button
+        id="resend-btn"
+        class="btn secondary w-full"
+        type="button"
+        (click)="resend()"
+      >
+        🔄 Kodni qayta yuborish
+      </button>
+    </form>
+  </div>
+</div>

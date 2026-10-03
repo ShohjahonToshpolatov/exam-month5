@@ -1,100 +1,168 @@
-```html
 <div class="container" *ngIf="item">
-  <a routerLink="/items">← E'lonlar</a>
+  <!-- Navbar -->
+  <nav class="navbar" style="position: static; margin: -32px -24px 32px; padding: 0 24px; border-radius: 0 0 20px 20px;">
+    <a class="navbar-brand" routerLink="/items">🔍 TopFind</a>
+    <div class="navbar-links">
+      <a class="nav-link" routerLink="/items">E'lonlar</a>
+      <a class="nav-link" routerLink="/profile">Profil</a>
+    </div>
+  </nav>
 
-  <div class="card">
-    <h1>{{ item.title }}</h1>
+  <a class="back-link" routerLink="/items">← E'lonlarga qaytish</a>
 
-    <p>{{ item.description }}</p>
+  <!-- Item Detail Card -->
+  <div class="card animate-in" style="margin-bottom: 24px;">
+    <!-- Header -->
+    <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom:20px;">
+      <div style="flex:1;">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+          <span
+            class="badge"
+            [class.badge-lost]="item.type === 'lost'"
+            [class.badge-found]="item.type === 'found'"
+          >
+            <span *ngIf="item.type === 'lost'">❌ Yo'qolgan</span>
+            <span *ngIf="item.type === 'found'">✅ Topilgan</span>
+          </span>
+          <span
+            class="badge"
+            [class.badge-active]="item.status === 'active'"
+            [class.badge-closed]="item.status === 'closed'"
+          >
+            {{item.status}}
+          </span>
+        </div>
+        <h1 style="font-size:1.6rem; margin-bottom:8px;">{{item.title}}</h1>
+        <p class="muted">📍 {{item.location}}</p>
+      </div>
+    </div>
 
-    <p>{{ item.location }} · {{ item.type }} · {{ item.status }}</p>
+    <!-- Description -->
+    <div style="background:var(--glass-1); border:1px solid var(--glass-border); border-radius:var(--radius-md); padding:20px; margin-bottom:20px;">
+      <p style="color:var(--text-secondary); line-height:1.8; font-size:0.95rem;">
+        {{item.description || 'Tavsif mavjud emas'}}
+      </p>
+    </div>
 
-    <p class="muted">Egasi: {{ item.owner_name || item.full_name || "-" }}</p>
+    <!-- Owner Info -->
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px; padding:14px 18px; background:var(--glass-1); border:1px solid var(--glass-border); border-radius:var(--radius-md);">
+      <div style="width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg,var(--primary),var(--secondary)); display:flex;align-items:center;justify-content:center; font-size:1rem; flex-shrink:0;">
+        👤
+      </div>
+      <div>
+        <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Egasi</div>
+        <div style="font-weight:600; color:var(--text-primary);">{{item.owner_name || item.full_name || 'Noma\'lum'}}</div>
+      </div>
+    </div>
 
+    <!-- Actions -->
     <div class="row">
-      <a class="btn secondary" [routerLink]="['/items', item.id, 'edit']">
-        Tahrirlash
+      <a class="btn secondary" id="edit-item-btn" [routerLink]="['/items', item.id, 'edit']">
+        ✏️ Tahrirlash
       </a>
-
-      <button class="btn" (click)="close()">Yopish</button>
+      <button class="btn danger" id="close-item-btn" (click)="close()">
+        🔒 Yopish
+      </button>
     </div>
   </div>
 
-  <p class="error" *ngIf="error">{{ error }}</p>
+  <!-- Messages -->
+  <p class="error" *ngIf="error">{{error}}</p>
+  <p class="success" *ngIf="success">🎉 {{success}}</p>
 
-  <p class="success" *ngIf="success">{{ success }}</p>
+  <!-- Claims List -->
+  <section class="card animate-in animate-in-delay-1" style="margin-bottom: 24px;">
+    <h2>🤝 Da'volar</h2>
 
-  <section class="card">
-    <h2>Da'volar</h2>
-
-    <div *ngIf="claimList.length === 0">
-      <p>Hozircha da'volar yo'q.</p>
+    <div class="empty-state" *ngIf="claimList.length === 0">
+      <div class="empty-icon">📭</div>
+      <p>Hozircha da'volar yo'q</p>
     </div>
 
-    <div *ngFor="let c of claimList" class="claim">
-      <p>
-        <strong>
-          {{ c.full_name || c.claimant_name || "Foydalanuvchi" }}
-        </strong>
-      </p>
+    <div class="claim-card" *ngFor="let c of claimList" id="claim-{{c.id}}">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+        <div style="width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--primary),var(--accent)); display:flex;align-items:center;justify-content:center; font-size:0.875rem;">
+          👤
+        </div>
+        <strong>{{c.full_name || c.claimant_name || 'Foydalanuvchi'}}</strong>
+        <span class="badge badge-active" style="margin-left:auto; font-size:0.7rem; padding:2px 8px;">{{c.status}}</span>
+      </div>
 
-      <p>
-        <strong>Xabar:</strong>
-        {{ c.message || "Xabar yozilmagan" }}
-      </p>
+      <p><strong style="color:var(--text-muted);">Xabar:</strong> {{c.message || 'Xabar yozilmagan'}}</p>
+      <p *ngIf="c.answer"><strong style="color:var(--text-muted);">Javob:</strong> {{c.answer}}</p>
 
-      <p>
-        <strong>Javob:</strong>
-        {{ c.answer || "-" }}
-      </p>
-
-      <p>
-        <strong>Holat:</strong>
-        {{ c.status }}
-      </p>
-
-      <div class="row">
-        <button class="btn" (click)="approve(c.id)">Approve</button>
-
-        <button class="btn danger" (click)="reject(c.id)">Reject</button>
+      <div class="row mt-16">
+        <button class="btn success" style="font-size:0.85rem; padding:8px 16px;" (click)="approve(c.id)">
+          ✅ Tasdiqlash
+        </button>
+        <button class="btn danger" style="font-size:0.85rem; padding:8px 16px;" (click)="reject(c.id)">
+          ❌ Rad etish
+        </button>
       </div>
     </div>
   </section>
 
-  <section class="card" *ngIf="item.type === 'found'">
-    <h2>Da'vo yuborish</h2>
+  <!-- Submit Claim (for found items) -->
+  <section class="card animate-in animate-in-delay-2" *ngIf="item.type === 'found'">
+    <h2>📝 Da'vo yuborish</h2>
+    <p class="muted mb-16">Bu narsa sizniki ekanini isbotlang</p>
 
     <form class="form" (ngSubmit)="submitClaim()">
       <label>
         Maxfiy javob
-
-        <input name="answer" [(ngModel)]="answer" required />
+        <input
+          id="claim-answer"
+          name="answer"
+          [(ngModel)]="answer"
+          placeholder="E'lon egasi bilishi kerak bo'lgan ma'lumot"
+          required
+        />
       </label>
 
       <label>
         Xabar
-
         <textarea
+          id="claim-message"
           name="message"
           [(ngModel)]="message"
-          placeholder="Xabar yozing"
+          placeholder="Buyum haqida batafsil ma'lumot yozing..."
+          style="min-height: 120px;"
         ></textarea>
       </label>
 
-      <button class="btn" type="submit">Yuborish</button>
+      <button class="btn" id="submit-claim-btn" type="submit">
+        🚀 Da'vo yuborish
+      </button>
     </form>
   </section>
 
-  <section class="card" *ngIf="item.type === 'lost'">
-    <h2>Men topdim</h2>
+  <!-- Report Found (for lost items) -->
+  <section class="card animate-in animate-in-delay-2" *ngIf="item.type === 'lost'">
+    <h2>🎯 Men topdim!</h2>
+    <p class="muted mb-16">Bu buyumni topganingizni egasiga xabar bering</p>
 
-    <textarea [(ngModel)]="reportMessage" placeholder="Xabar"></textarea>
+    <div class="form">
+      <label>
+        Xabar
+        <textarea
+          id="report-message"
+          [(ngModel)]="reportMessage"
+          placeholder="Buyumni qayerda topgansiz? Tafsilotlar yozing..."
+          style="min-height: 120px;"
+        ></textarea>
+      </label>
 
-    <button class="btn" type="button" (click)="report()">Xabar yuborish</button>
+      <button class="btn success" id="report-btn" type="button" (click)="report()">
+        📨 Xabar yuborish
+      </button>
+    </div>
   </section>
 </div>
 
+<!-- Loading state -->
 <div class="container" *ngIf="!item">
-  <p>Yuklanmoqda...</p>
+  <div class="loading-state" style="min-height: 60vh;">
+    <div class="spinner"></div>
+    <span>E'lon yuklanmoqda...</span>
+  </div>
 </div>
-```

@@ -1,1 +1,77 @@
-<div class="container"><h1>Admin dashboard</h1><p class="error">{{error}}</p><div class="grid grid-3"><div class="card"><b>Jami e'lonlar</b><h2>{{stats?.total_items??stats?.items??0}}</h2></div><div class="card"><b>Qaytarilgan</b><h2>{{stats?.returned_items??stats?.returned??0}}</h2></div><div class="card"><b>Kategoriyalar</b><h2>{{stats?.categories??0}}</h2></div></div><div class="row"><a routerLink="/admin/categories">Kategoriyalar</a><a routerLink="/admin/users">Foydalanuvchilar</a><a routerLink="/items">E'lonlar</a></div></div>
+<div class="container">
+  <!-- Navbar -->
+  <nav class="navbar" style="position: static; margin: -32px -24px 32px; padding: 0 24px; border-radius: 0 0 20px 20px;">
+    <a class="navbar-brand" routerLink="/items">🔍 TopFind</a>
+    <div class="navbar-links">
+      <a class="nav-link" routerLink="/admin">Dashboard</a>
+      <a class="nav-link" routerLink="/admin/categories">Kategoriyalar</a>
+      <a class="nav-link" routerLink="/admin/users">Foydalanuvchilar</a>
+      <a class="nav-link" routerLink="/items">E'lonlar</a>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <div class="page-header animate-in">
+    <div>
+      <h1>⚡ Admin Dashboard</h1>
+      <p class="muted mt-8">Platforma statistikasi va boshqaruv</p>
+    </div>
+  </div>
+
+  <p class="error" *ngIf="error">{{error}}</p>
+
+  <!-- Stats Grid -->
+  <div class="grid grid-3 animate-in animate-in-delay-1" style="margin-bottom:32px;">
+    <div class="stat-card">
+      <span class="stat-icon">📦</span>
+      <div class="stat-label">Jami E'lonlar</div>
+      <div class="stat-value">{{stats?.total_items ?? stats?.items ?? 0}}</div>
+    </div>
+
+    <div class="stat-card">
+      <span class="stat-icon" style="filter:drop-shadow(0 0 10px var(--success));">✅</span>
+      <div class="stat-label">Qaytarilgan</div>
+      <div class="stat-value" style="background:linear-gradient(135deg,var(--success),#00b37a); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">
+        {{stats?.returned_items ?? stats?.returned ?? 0}}
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <span class="stat-icon" style="filter:drop-shadow(0 0 10px var(--secondary));">🏷️</span>
+      <div class="stat-label">Kategoriyalar</div>
+      <div class="stat-value" style="background:linear-gradient(135deg,var(--secondary),#0099bb); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">
+        {{stats?.categories ?? 0}}
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Navigation Cards -->
+  <div class="grid grid-3 animate-in animate-in-delay-2">
+    <a routerLink="/admin/categories" class="card" style="text-align:center; cursor:pointer; text-decoration:none;">
+      <div style="font-size:2.5rem; margin-bottom:16px; filter:drop-shadow(0 0 15px rgba(0,217,255,0.5));">🏷️</div>
+      <h3>Kategoriyalar</h3>
+      <p class="muted mt-8" style="font-size:0.85rem;">Kategoriyalarni boshqaring</p>
+      <div class="btn pill" style="margin-top:16px; font-size:0.85rem; padding:9px 20px; display:inline-flex;">
+        Boshqarish →
+      </div>
+    </a>
+
+    <a routerLink="/admin/users" class="card" style="text-align:center; cursor:pointer; text-decoration:none;">
+      <div style="font-size:2.5rem; margin-bottom:16px; filter:drop-shadow(0 0 15px rgba(255,107,157,0.5));">👥</div>
+      <h3>Foydalanuvchilar</h3>
+      <p class="muted mt-8" style="font-size:0.85rem;">Foydalanuvchilarni ko'ring</p>
+      <div class="btn pill" style="margin-top:16px; font-size:0.85rem; padding:9px 20px; display:inline-flex; background:linear-gradient(135deg,var(--accent),#d4385a);">
+        Ko'rish →
+      </div>
+    </a>
+
+    <a routerLink="/items" class="card" style="text-align:center; cursor:pointer; text-decoration:none;">
+      <div style="font-size:2.5rem; margin-bottom:16px; filter:drop-shadow(0 0 15px rgba(108,99,255,0.5));">📋</div>
+      <h3>E'lonlar</h3>
+      <p class="muted mt-8" style="font-size:0.85rem;">Barcha e'lonlarni ko'ring</p>
+      <div class="btn pill" style="margin-top:16px; font-size:0.85rem; padding:9px 20px; display:inline-flex;">
+        Ko'rish →
+      </div>
+    </a>
+  </div>
+</div>

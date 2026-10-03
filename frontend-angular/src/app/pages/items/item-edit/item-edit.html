@@ -1,1 +1,75 @@
-<div class="container"><div class="card"><h1>E'lonni tahrirlash</h1><form class="form" (ngSubmit)="submit()"><label>Sarlavha<input name="title" [(ngModel)]="title" required></label><label>Tavsif<textarea name="description" [(ngModel)]="description"></textarea></label><label>Joylashuv<input name="location" [(ngModel)]="location"></label><label>Kategoriya<select name="category_id" [(ngModel)]="category_id"><option *ngFor="let c of categories" [value]="c.id">{{c.name}}</option></select></label><label>Status<select name="status" [(ngModel)]="status"><option value="active">active</option><option value="closed">closed</option></select></label><button class="btn">Saqlash</button></form><p class="error">{{error}}</p></div></div>
+<div class="container">
+  <!-- Navbar -->
+  <nav class="navbar" style="position: static; margin: -32px -24px 32px; padding: 0 24px; border-radius: 0 0 20px 20px;">
+    <a class="navbar-brand" routerLink="/items">🔍 TopFind</a>
+    <div class="navbar-links">
+      <a class="nav-link" routerLink="/items">E'lonlar</a>
+    </div>
+  </nav>
+
+  <a class="back-link" routerLink="/items">← E'lonlarga qaytish</a>
+
+  <div class="card animate-in" style="max-width: 700px; margin: 0 auto;">
+    <div style="text-align:center; margin-bottom:32px;">
+      <div style="font-size:3rem; margin-bottom:12px; filter:drop-shadow(0 0 20px rgba(255,165,2,0.5));">✏️</div>
+      <h1>E'lonni tahrirlash</h1>
+      <p class="muted">Quyidagi ma'lumotlarni yangilang</p>
+    </div>
+
+    <form class="form" (ngSubmit)="submit()">
+      <label>
+        Sarlavha
+        <input
+          id="edit-title"
+          name="title"
+          [(ngModel)]="title"
+          placeholder="Buyum sarlavhasi"
+          required
+        />
+      </label>
+
+      <label>
+        Tavsif
+        <textarea
+          id="edit-description"
+          name="description"
+          [(ngModel)]="description"
+          placeholder="Batafsil tavsif..."
+          style="min-height:120px;"
+        ></textarea>
+      </label>
+
+      <label>
+        Joylashuv
+        <input
+          id="edit-location"
+          name="location"
+          [(ngModel)]="location"
+          placeholder="📍 Manzil"
+        />
+      </label>
+
+      <label>
+        Kategoriya
+        <select id="edit-category" name="category_id" [(ngModel)]="category_id">
+          <option value="">🏷️ Kategoriya</option>
+          <option *ngFor="let c of categories" [value]="c.id">{{c.name}}</option>
+        </select>
+      </label>
+
+      <label>
+        Status
+        <select id="edit-status" name="status" [(ngModel)]="status">
+          <option value="active">🟢 Aktiv</option>
+          <option value="closed">🔴 Yopilgan</option>
+        </select>
+      </label>
+
+      <p class="error">{{error}}</p>
+
+      <button id="edit-save-btn" class="btn w-full" type="submit" style="padding:14px;">
+        💾 Saqlash
+      </button>
+    </form>
+  </div>
+</div>

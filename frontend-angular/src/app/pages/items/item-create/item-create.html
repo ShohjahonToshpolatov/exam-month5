@@ -1,58 +1,167 @@
 <div class="container">
-  <div class="card">
-    <h1>Yangi e'lon</h1>
+  <!-- Navbar -->
+  <nav class="navbar" style="position: static; margin: -32px -24px 32px; padding: 0 24px; border-radius: 0 0 20px 20px;">
+    <a class="navbar-brand" routerLink="/items">🔍 TopFind</a>
+    <div class="navbar-links">
+      <a class="nav-link" routerLink="/items">E'lonlar</a>
+    </div>
+  </nav>
+
+  <a class="back-link" routerLink="/items">← E'lonlarga qaytish</a>
+
+  <div class="card animate-in" style="max-width: 700px; margin: 0 auto;">
+    <!-- Header -->
+    <div style="text-align:center; margin-bottom:32px;">
+      <div style="font-size:3rem; margin-bottom:12px; filter:drop-shadow(0 0 20px rgba(108,99,255,0.5));">📋</div>
+      <h1>Yangi E'lon</h1>
+      <p class="muted">Yo'qolgan yoki topilgan buyum haqida ma'lumot yozing</p>
+    </div>
+
     <form class="form" (ngSubmit)="submit()">
-      <label
-        >Turi<select name="type" [(ngModel)]="type">
-          <option value="lost">Yo'qolgan</option>
-          <option value="found">Topilgan</option>
-        </select></label
-      ><label>Sarlavha<input name="title" [(ngModel)]="title" required /></label
-      ><label
-        >Tavsif<textarea
+      <!-- Type Toggle -->
+      <label>
+        E'lon turi
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:4px;">
+          <label
+            style="
+              display:flex; align-items:center; gap:10px; padding:14px 18px;
+              border-radius:var(--radius-md); cursor:pointer; transition:0.2s;
+              border:2px solid;
+            "
+            [style.borderColor]="type === 'lost' ? 'var(--danger)' : 'var(--glass-border)'"
+            [style.background]="type === 'lost' ? 'rgba(255,71,87,0.1)' : 'var(--glass-1)'"
+          >
+            <input
+              type="radio"
+              name="type"
+              value="lost"
+              [(ngModel)]="type"
+              style="accent-color:var(--danger); width:18px; height:18px;"
+            />
+            <span style="font-weight:600;">❌ Yo'qolgan</span>
+          </label>
+          <label
+            style="
+              display:flex; align-items:center; gap:10px; padding:14px 18px;
+              border-radius:var(--radius-md); cursor:pointer; transition:0.2s;
+              border:2px solid;
+            "
+            [style.borderColor]="type === 'found' ? 'var(--success)' : 'var(--glass-border)'"
+            [style.background]="type === 'found' ? 'rgba(0,229,160,0.08)' : 'var(--glass-1)'"
+          >
+            <input
+              type="radio"
+              name="type"
+              value="found"
+              [(ngModel)]="type"
+              style="accent-color:var(--success); width:18px; height:18px;"
+            />
+            <span style="font-weight:600;">✅ Topilgan</span>
+          </label>
+        </div>
+      </label>
+
+      <label>
+        Sarlavha
+        <input
+          id="create-title"
+          name="title"
+          [(ngModel)]="title"
+          placeholder="Buyum nomi yoki qisqa tavsif"
+          required
+        />
+      </label>
+
+      <label>
+        Tavsif
+        <textarea
+          id="create-description"
           name="description"
           [(ngModel)]="description"
-        ></textarea></label
-      ><label
-        >Joylashuv<input
-          name="location"
-          [(ngModel)]="location"
-          required /></label
-      ><label
-        >Kategoriya<select
-          name="category_id"
-          [(ngModel)]="category_id"
-          required
-        >
-          <option *ngFor="let c of categories" [value]="c.id">
-            {{c.name}}
-          </option>
-        </select></label
-      ><label
-        >Sana<input
-          name="event_date"
-          type="date"
-          [(ngModel)]="event_date"
-          required /></label
-      ><ng-container *ngIf="type==='found'"
-        ><label
-          >Maxfiy savol<input
-            name="secret_question"
-            [(ngModel)]="secret_question"
-            required /></label
-        ><label
-          >Maxfiy javob<input
-            name="secret_answer"
-            [(ngModel)]="secret_answer"
-            required /></label></ng-container
-      ><label
-        >Rasmlar (1-3 ta)<input
+          placeholder="Buyum haqida batafsil ma'lumot kiriting..."
+          style="min-height:120px;"
+        ></textarea>
+      </label>
+
+      <div class="grid grid-2">
+        <label>
+          Joylashuv
+          <input
+            id="create-location"
+            name="location"
+            [(ngModel)]="location"
+            placeholder="📍 Qayerda?"
+            required
+          />
+        </label>
+
+        <label>
+          Sana
+          <input
+            id="create-date"
+            name="event_date"
+            type="date"
+            [(ngModel)]="event_date"
+            required
+          />
+        </label>
+      </div>
+
+      <label>
+        Kategoriya
+        <select id="create-category" name="category_id" [(ngModel)]="category_id" required>
+          <option value="">🏷️ Kategoriya tanlang</option>
+          <option *ngFor="let c of categories" [value]="c.id">{{c.name}}</option>
+        </select>
+      </label>
+
+      <!-- Secret fields for "found" type -->
+      <ng-container *ngIf="type === 'found'">
+        <div style="background:rgba(0,229,160,0.05); border:1px solid rgba(0,229,160,0.15); border-radius:var(--radius-md); padding:20px;">
+          <p style="font-size:0.8rem; color:var(--success); font-weight:600; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:16px;">
+            🔐 Maxfiy ma'lumotlar
+          </p>
+          <div class="form">
+            <label>
+              Maxfiy savol
+              <input
+                id="create-secret-q"
+                name="secret_question"
+                [(ngModel)]="secret_question"
+                placeholder="Faqat haqiqiy egasi biladigan savol"
+                required
+              />
+            </label>
+            <label>
+              Maxfiy javob
+              <input
+                id="create-secret-a"
+                name="secret_answer"
+                [(ngModel)]="secret_answer"
+                placeholder="To'g'ri javob"
+                required
+              />
+            </label>
+          </div>
+        </div>
+      </ng-container>
+
+      <label>
+        Rasmlar (1-3 ta)
+        <input
+          id="create-images"
           type="file"
           accept="image/*"
           multiple
-          (change)="pick($event)" /></label
-      ><button class="btn">Yaratish</button>
+          (change)="pick($event)"
+        />
+      </label>
+
+      <p class="error">{{error}}</p>
+
+      <button id="create-submit-btn" class="btn w-full" type="submit" style="padding:14px;">
+        ✨ E'lon yaratish
+      </button>
     </form>
-    <p class="error">{{error}}</p>
   </div>
 </div>
