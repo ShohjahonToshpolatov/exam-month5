@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <title>"Topildi" Platformasi — Taqdimot (PDF)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    @page {
+      size: 16in 9in; /* 16:9 Widescreen PDF ratio */
+      margin: 0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #060814;
+      color: #f3f4f6;
+      width: 16in;
+      margin: 0 auto;
+    }
+
+    .slide-page {
+      width: 16in;
+      height: 9in;
+      position: relative;
+      overflow: hidden;
+      background: #070914;
+      page-break-after: always;
+      break-after: page;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 0.6in 0.8in;
+    }
+
+    /* Ambient Glowing Orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      opacity: 0.45;
+    }
+    .orb-1 { width: 5.5in; height: 5.5in; background: #6366f1; top: -1.5in; left: -1.5in; }
+    .orb-2 { width: 6in; height: 6in; background: #a855f7; bottom: -2in; right: -1.5in; }
+    .orb-3 { width: 4.5in; height: 4.5in; background: #06b6d4; top: 30%; left: 40%; opacity: 0.2; }
+
+    /* Header */
+    .top-bar {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.3in;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.15in;
+      font-size: 0.28in;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      color: #fff;
+    }
+
+    .brand-logo {
+      width: 0.45in;
+      height: 0.45in;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      border-radius: 0.12in;
+      display: grid;
+      place-items: center;
+      font-size: 0.24in;
+      box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+    }
+
+    .slide-num {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 0.08in 0.22in;
+      border-radius: 0.3in;
+      font-size: 0.16in;
+      font-weight: 700;
+      color: #a7f3d0;
+    }
+
+    /* Main Content */
+    .content {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .slide-tag {
+      font-size: 0.15in;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #38bdf8;
+      margin-bottom: 0.1in;
+    }
+
+    .slide-title {
+      font-size: 0.45in;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 0.35in;
+      background: linear-gradient(135deg, #ffffff 40%, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Grids & Cards */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.35in; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.3in; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.22in; }
+
+    .card {
+      background: rgba(18, 24, 43, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0.22in;
+      padding: 0.35in;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    }
+
+    .card-icon {
+      width: 0.55in;
+      height: 0.55in;
+      border-radius: 0.15in;
+      background: rgba(99, 102, 241, 0.18);
+      color: #818cf8;
+      display: grid;
+      place-items: center;
+      font-size: 0.28in;
+      margin-bottom: 0.2in;
+    }
+
+    .card-title {
+      font-size: 0.24in;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.12in;
+    }
+
+    .card-desc {
+      font-size: 0.17in;
+      color: #94a3b8;
+      line-height: 1.6;
+    }
+
+    /* Code Box */
+    .code-box {
+      background: #090d16;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 0.18in;
+      padding: 0.28in;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.16in;
+      color: #e2e8f0;
+      line-height: 1.6;
+    }
+
+    /* Title Slide Layout */
+    .hero-center {
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-title {
+      font-size: 0.72in;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 0.25in;
+      background: linear-gradient(135deg, #ffffff 20%, #c084fc 60%, #6366f1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 0.25in;
+      color: #94a3b8;
+      max-width: 9in;
+      margin: 0 auto 0.45in auto;
+      line-height: 1.5;
+    }
+
+    .pills {
+      display: flex;
+      gap: 0.16in;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 0.12in 0.28in;
+      border-radius: 0.4in;
+      font-size: 0.17in;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+
+    /* Footer */
+    .bottom-bar {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 0.18in;
+      font-size: 0.15in;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .highlight-purple { color: #c084fc; font-weight: 700; }
+    .highlight-cyan { color: #38bdf8; font-weight: 700; }
+    .highlight-green { color: #4ade80; font-weight: 700; }
+    .highlight-yellow { color: #facc15; font-weight: 700; }
+  </style>
+</head>
+<body>
+
+  <!-- SLIDE 1: Cover -->
+  <div class="slide-page hero-center">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    
+    <div class="top-bar" style="width: 100%;">
+      <div class="brand">
+        <div class="brand-logo">🔍</div>
+        <span>TOPILDI</span>
+      </div>
+      <div class="slide-num">SLIDE 01 / 10</div>
+    </div>
+
+    <div class="content">
+      <div class="slide-tag">FULL-STACK IT PROJECT PRESENTATION</div>
+      <h1 class="hero-title">"TOPILDI" Platformasi</h1>
+      <p class="hero-subtitle">Yo'qotilgan va topib olingan buyumlarni izlash hamda ularning egalarini topish bo'yicha zamonaviy va xavfsiz full-stack web-tizim.</p>
+      <div class="pills">
+        <span class="pill">⚡ Angular 19</span>
+        <span class="pill">🟢 Node.js & Express</span>
+        <span class="pill">🐘 PostgreSQL</span>
+        <span class="pill">🔒 JWT + OTP Auth</span>
+        <span class="pill">✨ 3D CSS Design</span>
+      </div>
+    </div>
+
+    <div class="bottom-bar" style="width: 100%;">
+      <span>Muallif: Shohjahon Toshpo'latov</span>
+      <span>Najot Ta'lim — Month 5 Exam Project</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: Problem & Solution -->
+  <div class="slide-page">
+    <div class="orb orb-1"></div>
+    
+    <div class="top-bar">
+      <div class="brand">
+        <div class="brand-logo">🔍</div>
+        <span>TOPILDI</span>
+      </div>
+      <div class="slide-num">SLIDE 02 / 10</div>
+    </div>
+
+    <div class="content">
+      <div class="slide-tag">1-BO'LIM // LOYIHA MAQSADI</div>
+      <h2 class="slide-title">Mavjud Muammo va Bizning Yechim</h2>
+      <div class="grid-2">
+        <div class="card" style="border-left: 5px solid #f87171;">
+          <div class="card-icon" style="background: rgba(248, 113, 113, 0.15); color: #f87171;">⚠️</div>
+          <h3 class="card-title">Mavjud Muammo</h3>
+          <p class="card-desc">Insonlar buyumlarini yo'qotganda tarqoq Telegram-guruhlarga murojaat qilishadi. Ma'lumotlar tez yo'qoladi, qidiruv tizimi mavjud emas va firibgarlik xavfi yuqori.</p>
+        </div>
+        <div class="card" style="border-left: 5px solid #4ade80;">
+          <div class="card-icon" style="background: rgba(74, 222, 128, 0.15); color: #4ade80;">✅</div>
+          <h3 class="card-title">"Topildi" Yechimi</h3>
+          <p class="card-desc">Barcha e'lonlarni bir joyga jamlovchi, kategoriyalarga ajratuvchi, rasm yuklash va da'vo (Claims) tizimi orqali buyum egasini aniqlovchi markazlashgan platforma.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <span>TOPILDI PLATFORMASI</span>
+      <span>02 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: Tech Stack -->
+  <div class="slide-page">
+    <div class="orb orb-2"></div>
+
+    <div class="top-bar">
+      <div class="brand">
+        <div class="brand-logo">🔍</div>
+        <span>TOPILDI</span>
+      </div>
+      <div class="slide-num">SLIDE 03 / 10</div>
+    </div>
+
+    <div class="content">
+      <div class="slide-tag">2-BO'LIM // TEXNOLOGIYALAR</div>
+      <h2 class="slide-title">Full-Stack Texnologiyalar Steki</h2>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-icon">🔵</div>
+          <h3 class="card-title">Frontend (Angular 19)</h3>
+          <p class="card-desc"><b>Standalone Components, Signals & RxJS</b>. Modern Pure CSS3, 3D Perspective Transforms (`rotateX/Y/Z`), Glassmorphic UI va to'liq responsive layout.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🟢</div>
+          <h3 class="card-title">Backend (Node.js)</h3>
+          <p class="card-desc"><b>Express.js Framework</b>. RESTful API arxitekturasi, JWT Auth middleware, Multer fayl yuklagich va Nodemailer OTP email xizmati.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🐘</div>
+          <h3 class="card-title">Database (PostgreSQL)</h3>
+          <p class="card-desc"><b>PostgreSQL Relational DB</b>. Yuqori tezlik va xavfsizlik uchun `pg` Connection Pooling va indeksatsiyalangan ma'lumotlar bazasi.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <span>TOPILDI PLATFORMASI</span>
+      <span>03 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Database Architecture -->
+  <div class="slide-page">
+    <div class="orb orb-3"></div>
+
+    <div class="top-bar">
+      <div class="brand">
+        <div class="brand-logo">🔍</div>
+        <span>TOPILDI</span>
+      </div>
+      <div class="slide-num">SLIDE 04 / 10</div>
+    </div>
+
+    <div class="content">
+      <div class="slide-tag">3-BO'LIM // MA'LUMOTLAR BAZASI</div>
+      <h2 class="slide-title">Database Tuzilishi va Relatsiyalar</h2>
+      <div class="grid-2">
+        <div class="code-box">
+          <span class="highlight-purple">// PostgreSQL Jadvallari:</span><br><br>
+          1. <span class="highlight-cyan">users</span> (id, full_name, email, password_hash, role, is_verified, verification_code)<br>
+          2. <span class="highlight-cyan">categories</span> (id, name, slug, icon)<br>
+          3. <span class="highlight-cyan">items</span> (id, title, description, type, category_id, user_id, status, image_url)<br>
+          4. <span class="highlight-cyan">claims</span> (id, item_id, claimant_id, status, proof_description, contact_info)
+        </div>
+        <div class="card">
+          <h3 class="card-title">🔗 Jadvallar Bog'liqligi (Relations)</h3>
+          <p class="card-desc" style="margin-bottom: 0.15in;"><b>• User ➔ Items (1:N):</b> Bir foydalanuvchi bir nechta e'lonlar yaratishi mumkin.</p>
+          <p class="card-desc" style="margin-bottom: 0.15in;"><b>• Items ➔ Claims (1:N):</b> Bir e'longa bir nechta egalik da'volari tushishi mumkin.</p>
+          <p class="card-desc"><b>• Category ➔ Items (1:N):</b> Kategoriyalar orqali buyumlar tez va aniq saralanadi.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <span>TOPILDI PLATFORMASI</span>
+      <span>04 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Auth & OTP -->
+  <div class="slide-page">
+    <div class="orb orb-1"></div>
+
+    <div class="top-bar">
+      <div class="brand">
+        <div class="brand-logo">🔍</div>
+        <span>TOPILDI</span>
+      </div>
+      <div class="slide-num">SLIDE 05 / 10</div>
+    </div>
+
+    <div class="content">
+      <div class="slide-tag">4-BO'LIM // XAVFSIZLIK</div>
+      <h2 class="slide-title">Autentifikatsiya va Email OTP Verifikatsiya</h2>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-icon">🔐</div>
+          <h3 class="card-title">1. Registratsiya</h3>
+          <p class="card-desc">Foydalanuvchi ma'lumotlarini kiritadi. Parol `bcryptjs` orqali xeshlanib bazaga saqlanadi.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📩</div>
+          <h3 class="card-title">2. Email OTP Verifikatsiya</h3>
+          <p class="card-desc">Nodemailer orqali 6 xonali tasdiqlash kodi foydalanuvchi pochtasiga yuborilib, profil aktivlashtiriladi.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔑</div>
+          <h3 class="card-title">3. JWT Auth Guard</h3>
+          <p class="card-desc">Tizimga kirishda JWT Token yaratiladi va Angular HTTP Interceptor orqali barcha API so'rovlarga biriktiriladi.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <span>TOPILDI PLATFORMASI</span>
+      <span>05 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Items & Search -->
+  <div class="slide-page">
+    <div class="orb orb-2"></div>
+
+    <div class="top-bar">
+      <div class="brand">
+        <div class="brand-logo">🔍</div>
+        <span>TOPILDI</span>
+      </div>
+      <div class="slide-num">SLIDE 06 / 10</div>
+    </div>
+
+    <div class="content">
+      <div class="slide-tag">5-BO'LIM // E'LONLAR TIZIMI</div>
+      <h2 class="slide-title">Buyumlar E'loni va Qidiruv Tizimi</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3 class="card-title">📢 E'lon Turlari (Types)</h3>
+          <p class="card-desc" style="margin-bottom: 0.15in;"><span class="highlight-yellow"><b>• LOST (Yo'qolgan):</b></span> Yo'qotilgan buyum haqida batafsil ma'lumot va mukofot miqdori.</p>
+          <p class="card-desc"><span class="highlight-cyan"><b>• FOUND (Topilgan):</b></span> Topib olingan buyum va uni saqlab turgan joy manzili.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">🔎 Filtrlash va Qidiruv</h3>
+          <p class="card-desc">Dinamik SQL query builder yordamida nom, kategoriya, joylashuv, sana oralig'i hamda status (`ACTIVE / RESOLVED`) bo'yicha tezkor izlash va saralash.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <span>TOPILDI PLATFORMASI</span>
+      <span>06 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: Claims System -->
+  <div class="slide-page">
+    <div class="orb orb-3"></div>
+
+    <div class="top-bar">
+      <div class="brand">
+        <div class="brand-logo">🔍</div>
+        <span>TOPILDI</span>
+      </div>
+      <div class="slide-num">SLIDE 07 / 10</div>
+    </div>
+
+    <div class="content">
+      <div class="slide-tag">6-BO'LIM // DA'VO TIZIMI</div>
+      <h2 class="slide-title">Egalik Da'vosi (Claims Workflow)</h2>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-icon">📝</div>
+          <h3 class="card-title">Da'vo Yuborish</h3>
+          <p class="card-desc">Foydalanuvchi buyum uniki ekanligini isbotlovchi xususiy ma'lumot (rang, serial kod) yozib da'vo yuboradi.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔍</div>
+          <h3 class="card-title">Egasining Tasdig'i</h3>
+          <p class="card-desc">Buyum egasi kelgan da'voni ko'rib chiqadi va uni Approve (Qabul) yoki Reject (Rad) qiladi.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🤝</div>
+          <h3 class="card-title">Bog'lanish</h3>
+          <p class="card-desc">Da'vo qabul qilingach, ikkala tomon uchun ham kontaktlar va telefon raqamlari ochiladi.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <span>TOPILDI PLATFORMASI</span>
+      <span>07 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: Admin Panel -->
+  <div class="slide-page">
+    <div class="orb orb-1"></div>
+
+    <div class="top-bar">
+      <div class="brand">
+        <div class="brand-logo">🔍</div>
+        <span>TOPILDI</span>
+      </div>
+      <div class="slide-num">SLIDE 08 / 10</div>
+    </div>
+
+    <div class="content">
+      <div class="slide-tag">7-BO'LIM // MA'MURIYAT</div>
+      <h2 class="slide-title">Admin Panel va Boshqaruv</h2>
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <h3 class="card-title">Dashboard Stats</h3>
+          <p class="card-desc">Jami e'lonlar, faol da'volar hamda ro'yxatdan o'tgan foydalanuvchilarning real-vaqt statistikasi.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">👥</div>
+          <h3 class="card-title">Users Control</h3>
+          <p class="card-desc">Foydalanuvchilar rolini o'zgartirish (User ➔ Admin) va akkaunt holatini nazorat qilish.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏷️</div>
+          <h3 class="card-title">Categories CRUD</h3>
+          <p class="card-desc">Yangi kategoriyalar yaratish, tahrirlash hamda ikonalar biriktirish.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <span>TOPILDI PLATFORMASI</span>
+      <span>08 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: UI/UX & 3D CSS -->
+  <div class="slide-page">
+    <div class="orb orb-2"></div>
+
+    <div class="top-bar">
+      <div class="brand">
+        <div class="brand-logo">🔍</div>
+        <span>TOPILDI</span>
+      </div>
+      <div class="slide-num">SLIDE 09 / 10</div>
+    </div>
+
+    <div class="content">
+      <div class="slide-tag">8-BO'LIM // FRONTEND DIZAYN</div>
+      <h2 class="slide-title">UI/UX va 3D CSS Visual Effektlar</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3 class="card-title">✨ 3D CSS Perspective & Cubes</h3>
+          <p class="card-desc">Landing page hamda Auth sahifalarida maxsus CSS `transform-style: preserve-3d` va `rotateX/Y/Z` yordamida aylanuvchi 3D kublar hamda floating neon zarrachalar yaratilgan.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">💎 Glassmorphism & Micro-animations</h3>
+          <p class="card-desc">Xira fon (backdrop-filter blur), gradient borderlar, interaktiv input glowing va shimmer tugmalar foydalanuvchiga zamonaviy va premium taassurot beradi.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <span>TOPILDI PLATFORMASI</span>
+      <span>09 / 10</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: Conclusion -->
+  <div class="slide-page hero-center">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <div class="top-bar" style="width: 100%;">
+      <div class="brand">
+        <div class="brand-logo">🔍</div>
+        <span>TOPILDI</span>
+      </div>
+      <div class="slide-num">SLIDE 10 / 10</div>
+    </div>
+
+    <div class="content">
+      <div class="slide-tag">XULOSA</div>
+      <h1 class="hero-title" style="font-size: 0.65in;">E'tiboringiz uchun rahmat!</h1>
+      <p class="hero-subtitle">"Topildi" full-stack loyihasi bo'yicha savollaringiz bo'lsa javob berishga tayyorman.</p>
+      <div class="pills">
+        <span class="pill">🔗 GitHub: ShohjahonToshpolatov/exam-month5</span>
+        <span class="pill">🌐 http://localhost:4200</span>
+      </div>
+    </div>
+
+    <div class="bottom-bar" style="width: 100%;">
+      <span>Topildi Full-Stack Platformasi — 2026</span>
+      <span>10 / 10</span>
+    </div>
+  </div>
+
+</body>
+</html>

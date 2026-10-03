@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>"Topildi" Platformasi — Taqdimot Slaydlari</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #070913;
+      --bg-card: rgba(18, 24, 43, 0.75);
+      --border-card: rgba(255, 255, 255, 0.1);
+      --primary: #6366f1;
+      --primary-glow: rgba(99, 102, 241, 0.4);
+      --accent: #a855f7;
+      --accent-cyan: #06b6d4;
+      --accent-green: #10b981;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --font-main: 'Plus Jakarta Sans', sans-serif;
+      --font-code: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    /* Ambient Glowing Background Orbs */
+    .bg-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+    .orb-1 { width: 500px; height: 500px; background: var(--primary); top: -100px; left: -100px; }
+    .orb-2 { width: 600px; height: 600px; background: var(--accent); bottom: -150px; right: -150px; }
+    .orb-3 { width: 400px; height: 400px; background: var(--accent-cyan); top: 40%; left: 50%; transform: translate(-50%, -50%); opacity: 0.25; }
+
+    /* Slide Deck Container */
+    .deck-container {
+      position: relative;
+      z-index: 1;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Top Bar */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 48px;
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 0 20px var(--primary-glow);
+    }
+
+    .slide-badge {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-card);
+      backdrop-filter: blur(10px);
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* Main Slides Viewport */
+    .slides-wrapper {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slide {
+      position: absolute;
+      width: 85%;
+      max-width: 1280px;
+      height: 80%;
+      max-height: 720px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      backdrop-filter: blur(24px);
+      border-radius: 28px;
+      padding: 56px 64px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.92) translateY(30px);
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1) translateY(0);
+    }
+
+    /* Header in Slide */
+    .slide-header {
+      margin-bottom: 24px;
+    }
+
+    .slide-tag {
+      display: inline-block;
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--accent-cyan);
+      margin-bottom: 8px;
+    }
+
+    .slide-title {
+      font-size: 38px;
+      font-weight: 800;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #ffffff 30%, var(--text-muted));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .slide-content {
+      flex: 1;
+      display: flex;
+      gap: 40px;
+      align-items: center;
+    }
+
+    /* Slide Layout Variations */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      width: 100%;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      width: 100%;
+    }
+
+    /* Feature Cards */
+    .card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 20px;
+      padding: 28px;
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--primary);
+      transform: translateY(-4px);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      margin-bottom: 18px;
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Code & Architecture Block */
+    .code-box {
+      background: #0d1117;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 20px;
+      font-family: var(--font-code);
+      font-size: 13px;
+      color: #e6edf3;
+      overflow-x: auto;
+      line-height: 1.5;
+    }
+
+    .highlight-purple { color: #c084fc; }
+    .highlight-cyan { color: #22d3ee; }
+    .highlight-green { color: #4ade80; }
+    .highlight-yellow { color: #facc15; }
+
+    /* Title Slide Specifics */
+    .title-slide {
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-title {
+      font-size: 64px;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #ffffff 20%, #a855f7 70%, #6366f1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 22px;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto 36px auto;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    .hero-pills {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    /* Footer Controls */
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 48px;
+      z-index: 10;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-nav {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-card);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-nav:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      box-shadow: 0 0 15px var(--primary-glow);
+      transform: scale(1.08);
+    }
+
+    .progress-bar-wrap {
+      flex: 1;
+      max-width: 400px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 0 24px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), var(--accent), var(--accent-cyan));
+      transition: width 0.4s ease;
+      border-radius: 10px;
+    }
+
+    .hint {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Orbs -->
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
+
+  <div class="deck-container">
+    
+    <!-- Top Header -->
+    <header>
+      <div class="brand">
+        <div class="brand-icon">🔍</div>
+        <span>TOPILDI</span>
+      </div>
+      <div class="slide-badge" id="slideBadge">Slide 1 / 10</div>
+    </header>
+
+    <!-- Slides Viewport -->
+    <main class="slides-wrapper">
+
+      <!-- SLIDE 1: Title Slide -->
+      <div class="slide title-slide active" data-index="1">
+        <span class="slide-tag">FULL-STACK IT PROJECT PRESENTATION</span>
+        <h1 class="hero-title">"TOPILDI" Platformasi</h1>
+        <p class="hero-subtitle">Yo'qotilgan va topib olingan buyumlarni izlash va ularning egalarini topish bo'yicha zamonaviy va xavfsiz full-stack web-tizim.</p>
+        <div class="hero-pills">
+          <span class="pill">⚡ Angular 19</span>
+          <span class="pill">🟢 Node.js / Express</span>
+          <span class="pill">🐘 PostgreSQL</span>
+          <span class="pill">🔒 JWT + OTP Auth</span>
+          <span class="pill">✨ 3D CSS Design</span>
+        </div>
+      </div>
+
+      <!-- SLIDE 2: Problem & Solution -->
+      <div class="slide" data-index="2">
+        <div class="slide-header">
+          <span class="slide-tag">1-BO'LIM // MAQSAD</span>
+          <h2 class="slide-title">Muammo va Yechim</h2>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2">
+            <div class="card" style="border-left: 4px solid #ef4444;">
+              <div class="card-icon" style="background: rgba(239, 68, 68, 0.15); color: #f87171;">⚠️</div>
+              <h3 class="card-title">Mavjud Muammo</h3>
+              <p class="card-desc">Odamlar hujjat, kalit, hamyon yoki gadjetlarini yo'qotganda tarqoq telegram-guruhlarga murojaat qilishadi. Ma'lumotlar tez yo'qoladi, qidiruv tizimi yo'q va firibgarlik xavfi yuqori.</p>
+            </div>
+            <div class="card" style="border-left: 4px solid var(--accent-green);">
+              <div class="card-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">✅</div>
+              <h3 class="card-title">"Topildi" Yechimi</h3>
+              <p class="card-desc">Barcha e'lonlarni bir joyga jamlaydigan, kategoriyalarga ajratuvchi, rasm yuklash va da'vo (Claims) tizimi orqali buyum egasini aniqlaydigan yagona markazlashgan platforma.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 3: Tech Stack -->
+      <div class="slide" data-index="3">
+        <div class="slide-header">
+          <span class="slide-tag">2-BO'LIM // TEXNOLOGIYALAR</span>
+          <h2 class="slide-title">Full-Stack Texnologiyalar Steki</h2>
+        </div>
+        <div class="slide-content">
+          <div class="grid-3">
+            <div class="card">
+              <div class="card-icon">🔵</div>
+              <h3 class="card-title">Frontend</h3>
+              <p class="card-desc"><b>Angular 19+</b> (Standalone Component, Signals, RxJS, Reactive Forms). Shimmer va 3D CSS animatsiyalari hamda to'liq responsive layout.</p>
+            </div>
+            <div class="card">
+              <div class="card-icon">🟢</div>
+              <h3 class="card-title">Backend API</h3>
+              <p class="card-desc"><b>Node.js & Express.js</b>. RESTful API arxitekturasi, JWT middleware, Multer fayl yuklagichi va Nodemailer OTP xizmati.</p>
+            </div>
+            <div class="card">
+              <div class="card-icon">🐘</div>
+              <h3 class="card-title">Database</h3>
+              <p class="card-desc"><b>PostgreSQL</b> reletsion ma'lumotlar bazasi. Yuqori tezlik va xavfsizlik uchun `pg` Connection Pool va indeksatsiyalar.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 4: Database Schema -->
+      <div class="slide" data-index="4">
+        <div class="slide-header">
+          <span class="slide-tag">3-BO'LIM // ARXITEKTURA</span>
+          <h2 class="slide-title">Ma'lumotlar Bazasi Tuzilishi</h2>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2">
+            <div class="code-box">
+              <span class="highlight-purple">// PostgreSQL Jadvallari:</span><br><br>
+              1. <span class="highlight-cyan">users</span> (id, full_name, email, password_hash, role, is_verified, verification_code)<br>
+              2. <span class="highlight-cyan">categories</span> (id, name, slug, icon)<br>
+              3. <span class="highlight-cyan">items</span> (id, title, description, type, category_id, user_id, status, image_url)<br>
+              4. <span class="highlight-cyan">claims</span> (id, item_id, claimant_id, status, proof_description, contact_info)
+            </div>
+            <div class="card">
+              <h3 class="card-title">🔗 Jadvallar Relatsiyasi</h3>
+              <p class="card-desc" style="margin-bottom: 12px;"><b>• User ➔ Items:</b> 1:N (Bir foydalanuvchi ko'plab e'lonlar berishi mumkin)</p>
+              <p class="card-desc" style="margin-bottom: 12px;"><b>• Items ➔ Claims:</b> 1:N (Bir e'longa bir nechta egalik da'volari tushishi mumkin)</p>
+              <p class="card-desc"><b>• Category ➔ Items:</b> 1:N (Kategoriyalash buyumlarni qidirishni tezlashtiradi)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 5: Authentication System -->
+      <div class="slide" data-index="5">
+        <div class="slide-header">
+          <span class="slide-tag">4-BO'LIM // XAVFSIZLIK</span>
+          <h2 class="slide-title">Autentifikatsiya va Email OTP</h2>
+        </div>
+        <div class="slide-content">
+          <div class="grid-3">
+            <div class="card">
+              <div class="card-icon">🔐</div>
+              <h3 class="card-title">1. Registratsiya</h3>
+              <p class="card-desc">Foydalanuvchi parol bilan ro'yxatdan o'tadi. Parol `bcryptjs` orqali xeshlanib saqlanadi.</p>
+            </div>
+            <div class="card">
+              <div class="card-icon">📩</div>
+              <h3 class="card-title">2. Email Verification</h3>
+              <p class="card-desc">Nodemailer orqali 6 xonali tasdiqlash kodi foydalanuvchi pochtasiga yuboriladi va akkount aktivlashtiriladi.</p>
+            </div>
+            <div class="card">
+              <div class="card-icon">🔑</div>
+              <h3 class="card-title">3. JWT Auth Guard</h3>
+              <p class="card-desc">Login qilinganda JWT Token beriladi. Angular HTTP Interceptor barcha so'rovlarga avtomatik tokenni biriktiradi.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 6: Items & Search -->
+      <div class="slide" data-index="6">
+        <div class="slide-header">
+          <span class="slide-tag">5-BO'LIM // XUSUSIYATLAR</span>
+          <h2 class="slide-title">Buyumlar E'loni va Qidiruv Tizimi</h2>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2">
+            <div class="card">
+              <h3 class="card-title">📢 E'lon Turlari (Types)</h3>
+              <p class="card-desc" style="margin-bottom: 12px;"><span class="highlight-yellow"><b>• LOST (Yo'qolgan):</b></span> Yo'qotilgan buyum haqida ma'lumot va mukofot miqdori.</p>
+              <p class="card-desc"><span class="highlight-cyan"><b>• FOUND (Topilgan):</b></span> Topib olingan buyum va uni saqlab turgan joy manzili.</p>
+            </div>
+            <div class="card">
+              <h3 class="card-title">🔎 Filtrlash va Izlash</h3>
+              <p class="card-desc">Dinamik SQL query builder yordamida nom, kategoriya, joylashuv, sana va status (`ACTIVE / RESOLVED`) bo'yicha lahzalik saralash va qidiruv.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 7: Claims System -->
+      <div class="slide" data-index="7">
+        <div class="slide-header">
+          <span class="slide-tag">6-BO'LIM // DA'VO TIZIMI</span>
+          <h2 class="slide-title">Egalik Da'vosi (Claims Workflow)</h2>
+        </div>
+        <div class="slide-content">
+          <div class="grid-3">
+            <div class="card">
+              <div class="card-icon">📝</div>
+              <h3 class="card-title">Da'vo Yuborish</h3>
+              <p class="card-desc">Foydalanuvchi buyum uniki ekanligini isbotlovchi ma'lumot (maxsus belgi, rang, serial kod) yozib da'vo yuboradi.</p>
+            </div>
+            <div class="card">
+              <div class="card-icon">🔍</div>
+              <h3 class="card-title">Egasining Tasdig'i</h3>
+              <p class="card-desc">Buyum egasi kelgan da'voni ko'rib chiqadi va uni Approve (Qabul) yoki Reject (Rad) qiladi.</p>
+            </div>
+            <div class="card">
+              <div class="card-icon">🤝</div>
+              <h3 class="card-title">Bog'lanish</h3>
+              <p class="card-desc">Da'vo qabul qilingach, ikkala tomon ham bir-birining telefon raqamini ko'rishi mumkin va e'lon statusi RESOLVED bo'ladi.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 8: Admin Panel -->
+      <div class="slide" data-index="8">
+        <div class="slide-header">
+          <span class="slide-tag">7-BO'LIM // MA'MURIYAT</span>
+          <h2 class="slide-title">Admin Panel va Boshqaruv</h2>
+        </div>
+        <div class="slide-content">
+          <div class="grid-3">
+            <div class="card">
+              <div class="card-icon">📊</div>
+              <h3 class="card-title">Dashboard Stats</h3>
+              <p class="card-desc">Jami e'lonlar, faol da'volar soni, registratsiyadan o'tgan foydalanuvchilarning real-vaqt statistikasi.</p>
+            </div>
+            <div class="card">
+              <div class="card-icon">👥</div>
+              <h3 class="card-title">Users Control</h3>
+              <p class="card-desc">Foydalanuvchilar rolini o'zgartirish (User ➔ Admin), akkaunt holatini nazorat qilish.</p>
+            </div>
+            <div class="card">
+              <div class="card-icon">🏷️</div>
+              <h3 class="card-title">Categories CRUD</h3>
+              <p class="card-desc">Yangi kategoriyalar qo'shish, ularga ikonalar biriktirish va mavjudlarini tahrirlash.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 9: UI/UX & 3D Animations -->
+      <div class="slide" data-index="9">
+        <div class="slide-header">
+          <span class="slide-tag">8-BO'LIM // DIZAYN</span>
+          <h2 class="slide-title">UI/UX va 3D Visual Effektlar</h2>
+        </div>
+        <div class="slide-content">
+          <div class="grid-2">
+            <div class="card">
+              <h3 class="card-title">✨ 3D CSS Perspectives & Cubes</h3>
+              <p class="card-desc">Landing page va Auth sahifalarida maxsus CSS `transform-style: preserve-3d` yordamida aylanuvchi 3D kublar va floating zarrachalar yaratilgan.</p>
+            </div>
+            <div class="card">
+              <h3 class="card-title">💎 Glassmorphism & Neon Design</h3>
+              <p class="card-desc">Xira fon (backdrop-filter blur), gradient borderlar, interaktiv input glowing va micro-animations foydalanuvchiga zamonaviy premium taassurot beradi.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 10: Conclusion -->
+      <div class="slide title-slide" data-index="10">
+        <span class="slide-tag">XULOSA</span>
+        <h1 class="hero-title" style="font-size: 52px;">E'tiboringiz uchun rahmat!</h1>
+        <p class="hero-subtitle">"Topildi" full-stack loyihasi bo'yicha savollaringiz bo'lsa javob berishga tayyorman.</p>
+        <div class="hero-pills" style="margin-top: 20px;">
+          <span class="pill">🔗 GitHub: ShohjahonToshpolatov/exam-month5</span>
+          <span class="pill">🌐 http://localhost:4200</span>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Bottom Controls -->
+    <footer>
+      <div class="hint">⌨️ Navigatsiya uchun: <b>←</b> va <b>→</b> tugmalaridan foydalaning</div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <div class="controls">
+        <button class="btn-nav" id="prevBtn">←</button>
+        <button class="btn-nav" id="nextBtn">→</button>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const progressBar = document.getElementById('progressBar');
+    const slideBadge = document.getElementById('slideBadge');
+    
+    let currentIndex = 0;
+    const totalSlides = slides.length;
+
+    function updateSlides() {
+      slides.forEach((slide, idx) => {
+        if (idx === currentIndex) {
+          slide.classList.add('active');
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+
+      slideBadge.textContent = `Slide ${currentIndex + 1} / ${totalSlides}`;
+      const progressPercent = ((currentIndex + 1) / totalSlides) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateSlides();
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentIndex < totalSlides - 1) {
+        currentIndex++;
+        updateSlides();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        if (currentIndex < totalSlides - 1) {
+          currentIndex++;
+          updateSlides();
+        }
+      } else if (e.key === 'ArrowLeft') {
+        if (currentIndex > 0) {
+          currentIndex--;
+          updateSlides();
+        }
+      }
+    });
+
+    updateSlides();
+  </script>
+</body>
+</html>
