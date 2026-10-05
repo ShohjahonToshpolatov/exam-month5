@@ -3,7 +3,6 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { AuthService } from "../../../core/services/auth";
-
 @Component({
   selector: "app-login",
   standalone: true,
@@ -14,18 +13,16 @@ import { AuthService } from "../../../core/services/auth";
 export class Login {
   private auth = inject(AuthService);
   private router = inject(Router);
-
   email = "";
   password = "";
   error = "";
   loading = false;
-
-  // UI state
   showPass = false;
   emailFocused = false;
   passFocused = false;
-
   submit() {
+    if (this.loading)
+      return;
     this.error = "";
     this.loading = true;
     this.auth.login({ email: this.email, password: this.password }).subscribe({

@@ -1,14 +1,13 @@
 import { Component, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { Router } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { CategoryService } from "../../../core/services/category";
 import { ItemService } from "../../../core/services/item";
-
 @Component({
   selector: "app-item-create",
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: "./item-create.html",
   styleUrl: "./item-create.css",
 })
@@ -27,19 +26,28 @@ export class ItemCreate {
   secret_answer = "";
   files: File[] = [];
   error = "";
-
+  loading = false;
+  today = new Date().toLocaleDateString("en-CA");
   ngOnInit() {
     this.cats
       .list()
-      .subscribe({ next: (r) => (this.categories = r?.categories || r || []) });
+      .subscribe({ next: (r) => (this.categories = r.categories), error: e => this.error = e.error.message });
   }
-
   pick(event: Event) {
     const input = event.target as HTMLInputElement;
-    this.files = Array.from(input.files || []).slice(0, 3);
+    this.error = "";
+    this.files = Array.from(input.files || []);
+    if (this.files.length > 5 || this.files.some(file => file.size > 2 * 1024 * 1024 || !["image/jpeg", "image/png", "image/webp"].includes(file.type))) {
+      this.error = "Ko'pi bilan 5 ta JPG, PNG yoki WebP rasm. Har biri 2 MB dan oshmasin";
+      this.files = [];
+      input.value = "";
+    }
   }
-
   submit() {
+    if (this.loading)
+      return;
+    this.loading = true;
+    this.error = "";
     const data = new FormData();
     data.append("type", this.type);
     data.append("title", this.title);
@@ -54,7 +62,7 @@ export class ItemCreate {
     this.files.forEach((file) => data.append("images", file));
     this.api.create(data).subscribe({
       next: (r) => this.router.navigate(["/items", r?.item?.id || r?.id]),
-      error: (e) => (this.error = e?.error?.message || "E'lon yaratilmadi"),
+      error: (e) => { this.error = e.error.message; this.loading = false; },
     });
   }
 }

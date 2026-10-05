@@ -1,12 +1,4 @@
 <div class="container">
-  <!-- Navbar -->
-  <nav class="navbar" style="position: static; margin: -32px -24px 32px; padding: 0 24px; border-radius: 0 0 20px 20px;">
-    <a class="navbar-brand" routerLink="/items">🔍 TopFind</a>
-    <div class="navbar-links">
-      <a class="nav-link" routerLink="/items">E'lonlar</a>
-      <a class="nav-link" routerLink="/profile">Profil</a>
-    </div>
-  </nav>
 
   <div class="page-header animate-in">
     <h1>🤝 Da'volarim</h1>
@@ -15,8 +7,7 @@
 
   <p class="error" *ngIf="error">{{error}}</p>
 
-  <!-- Empty state -->
-  <div class="empty-state animate-in" *ngIf="claims.length === 0">
+  <div class="empty-state animate-in" *ngIf="!loading && !error && claims.length === 0">
     <div class="empty-icon">📭</div>
     <p>Hali da'volar yo'q</p>
     <p class="muted mt-8">E'lonlarga da'vo yuboring</p>
@@ -25,7 +16,7 @@
     </a>
   </div>
 
-  <!-- Claims grid -->
+  <p *ngIf="loading" class="muted">Yuklanmoqda...</p>
   <div class="grid grid-2 animate-in animate-in-delay-1">
     <div class="claim-card" *ngFor="let c of claims" id="my-claim-{{c.id}}">
       <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
@@ -34,16 +25,17 @@
         </strong>
         <span
           class="badge"
-          [class.badge-active]="c.status === 'pending' || c.status === 'approved'"
+          [class.badge-active]="c.status === 'pending' || c.status === 'accepted'"
           [class.badge-closed]="c.status === 'rejected'"
           style="font-size:0.7rem;"
         >
           <span *ngIf="c.status === 'pending'">⏳ Kutilmoqda</span>
-          <span *ngIf="c.status === 'approved'">✅ Tasdiqlandi</span>
+          <span *ngIf="c.status === 'accepted'">✅ Tasdiqlandi</span>
           <span *ngIf="c.status === 'rejected'">❌ Rad etildi</span>
-          <span *ngIf="c.status !== 'pending' && c.status !== 'approved' && c.status !== 'rejected'">{{c.status}}</span>
+          <span *ngIf="c.status !== 'pending' && c.status !== 'accepted' && c.status !== 'rejected'">{{c.status}}</span>
         </span>
       </div>
+      <a class="back-link" [routerLink]="['/items', c.item_id]">E’lonni ko‘rish →</a>
       <p>{{c.message || 'Xabar mavjud emas'}}</p>
       <p class="muted" *ngIf="c.answer" style="margin-top:8px;">
         <strong>Javobingiz:</strong> {{c.answer}}

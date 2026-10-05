@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
-    "db:init": "node db/init.js"
+    "db:init": "node db/init.js",
+    "test": "node --test test/*.test.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",

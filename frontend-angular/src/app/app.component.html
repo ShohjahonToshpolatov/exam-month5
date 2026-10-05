@@ -1,1 +1,17 @@
-<router-outlet></router-outlet>
+<a href="#main-content" class="skip-link">Asosiy sahifaga o'tish</a>
+<header class="site-header">
+  <a class="site-brand" routerLink="/" aria-label="TopFind bosh sahifa"><span class="brand-mark">⌕</span>TopFind<span class="brand-dot">.</span></a>
+  <button class="menu-toggle" type="button" (click)="menuOpen = !menuOpen" [attr.aria-expanded]="menuOpen" aria-controls="main-nav">{{menuOpen ? 'Yopish ×' : 'Menyu ☰'}}</button>
+  <nav id="main-nav" class="site-nav" [class.open]="menuOpen" aria-label="Asosiy navigatsiya">
+    <a routerLink="/items" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">E'lonlar</a>
+    <ng-container *ngIf="loggedIn">
+      <a routerLink="/claims" routerLinkActive="active">Da'volarim</a>
+      <a routerLink="/profile" routerLinkActive="active">Profil</a>
+      <a *ngIf="auth.getUser()?.role === 'admin'" routerLink="/admin" routerLinkActive="active">Admin</a>
+    </ng-container>
+    <a *ngIf="!loggedIn" routerLink="/login" routerLinkActive="active">Kirish</a>
+    <a class="btn" routerLink="/items/create">+ E'lon berish</a>
+  </nav>
+</header>
+<main id="main-content"><router-outlet></router-outlet></main>
+<footer class="site-footer"><a routerLink="/" class="site-brand">TopFind.</a><p>Bir buyum. Bir xabar. Yana bir quvonch.</p><span>© 2026 TopFind</span></footer>

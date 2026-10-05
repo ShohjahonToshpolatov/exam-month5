@@ -16,7 +16,6 @@ import { Profile } from "./pages/profile/profile/profile";
 import { Dashboard } from "./pages/admin/dashboard/dashboard";
 import { Users } from "./pages/admin/users/users";
 import { Categories } from "./pages/admin/categories/categories";
-
 export const routes: Routes = [
   { path: "", component: Home },
   { path: "login", component: Login },
@@ -33,10 +32,12 @@ export const routes: Routes = [
   {
     path: "admin",
     canActivate: [adminGuard],
+    canActivateChild: [adminGuard],
     children: [
       { path: "", component: Dashboard },
       { path: "users", component: Users },
       { path: "categories", component: Categories },
     ],
   },
+  { path: "**", redirectTo: "" },
 ];

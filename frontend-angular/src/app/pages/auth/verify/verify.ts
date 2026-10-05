@@ -21,16 +21,16 @@ export class Verify {
     this.auth
       .verify({ email: this.email, code: this.code })
       .subscribe({
-        next: () => this.router.navigateByUrl("/login"),
-        error: (e) => (this.error = e?.error?.message || "Kod noto'g'ri"),
-      });
+      next: () => this.router.navigateByUrl("/login"),
+      error: (e) => (this.error = e?.error?.message || "Kod noto'g'ri"),
+    });
   }
   resend() {
     this.auth
       .resendCode({ email: this.email })
       .subscribe({
-        next: () => (this.message = "Yangi kod yuborildi"),
-        error: (e) => (this.error = e?.error?.message || "Kod yuborilmadi"),
-      });
+      next: () => (this.message = "Yangi kod yuborildi"),
+      error: (e) => (this.error = e?.error?.message || "Kod yuborilmadi"),
+    });
   }
 }

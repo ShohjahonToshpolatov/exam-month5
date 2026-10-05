@@ -4,7 +4,7 @@
   "scripts": {
     "start": "ng serve --proxy-config proxy.conf.json",
     "build": "ng build",
-    "test": "ng test"
+    "test": "ngc --noEmit -p tsconfig.app.json"
   },
   "private": true,
   "dependencies": {

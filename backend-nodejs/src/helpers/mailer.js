@@ -1,15 +1,11 @@
 import nodemailer from "nodemailer";
 import { otpEmail } from "./emailTemplates.js";
-
 const createTransporter = () => {
-  if (
-    !process.env.SMTP_HOST ||
+  if (!process.env.SMTP_HOST ||
     !process.env.SMTP_USER ||
-    !process.env.SMTP_PASSWORD
-  ) {
+    !process.env.SMTP_PASSWORD) {
     return null;
   }
-
   return nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT || 587),
@@ -20,17 +16,15 @@ const createTransporter = () => {
     },
   });
 };
-
 const sendOtpEmail = async (to, fullName, code, purpose) => {
   const transporter = createTransporter();
-
   if (!transporter) {
+    if (process.env.NODE_ENV === "production")
+      throw new Error("SMTP sozlanmagan");
     console.log(`[DEV OTP] ${to}: ${code}`);
     return;
   }
-
   const email = otpEmail(fullName, code, purpose);
-
   await transporter.sendMail({
     from: process.env.SMTP_FROM || process.env.SMTP_USER,
     to,
@@ -38,5 +32,4 @@ const sendOtpEmail = async (to, fullName, code, purpose) => {
     html: email.html,
   });
 };
-
 export { sendOtpEmail };

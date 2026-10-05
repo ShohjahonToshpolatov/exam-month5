@@ -1,16 +1,5 @@
 <div class="container">
-  <!-- Navbar -->
-  <nav class="navbar" style="position: static; margin: -32px -24px 32px; padding: 0 24px; border-radius: 0 0 20px 20px;">
-    <a class="navbar-brand" routerLink="/items">🔍 TopFind</a>
-    <div class="navbar-links">
-      <a class="nav-link" routerLink="/admin">Dashboard</a>
-      <a class="nav-link" routerLink="/admin/categories">Kategoriyalar</a>
-      <a class="nav-link" routerLink="/admin/users">Foydalanuvchilar</a>
-      <a class="nav-link" routerLink="/items">E'lonlar</a>
-    </div>
-  </nav>
 
-  <!-- Header -->
   <div class="page-header animate-in">
     <div>
       <h1>⚡ Admin Dashboard</h1>
@@ -20,7 +9,6 @@
 
   <p class="error" *ngIf="error">{{error}}</p>
 
-  <!-- Stats Grid -->
   <div class="grid grid-3 animate-in animate-in-delay-1" style="margin-bottom:32px;">
     <div class="stat-card">
       <span class="stat-icon">📦</span>
@@ -45,7 +33,6 @@
     </div>
   </div>
 
-  <!-- Admin Navigation Cards -->
   <div class="grid grid-3 animate-in animate-in-delay-2">
     <a routerLink="/admin/categories" class="card" style="text-align:center; cursor:pointer; text-decoration:none;">
       <div style="font-size:2.5rem; margin-bottom:16px; filter:drop-shadow(0 0 15px rgba(0,217,255,0.5));">🏷️</div>

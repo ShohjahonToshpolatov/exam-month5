@@ -1,26 +1,16 @@
 <div class="container">
-  <!-- Navbar -->
-  <nav class="navbar" style="position: static; margin: -32px -24px 32px; padding: 0 24px; border-radius: 0 0 20px 20px;">
-    <a class="navbar-brand" routerLink="/items">🔍 TopFind</a>
-    <div class="navbar-links">
-      <a class="nav-link" routerLink="/admin">Dashboard</a>
-      <a class="nav-link" routerLink="/admin/categories" style="color:var(--secondary);">Kategoriyalar</a>
-      <a class="nav-link" routerLink="/admin/users">Foydalanuvchilar</a>
-    </div>
-  </nav>
 
   <div class="page-header animate-in">
     <h1>🏷️ Kategoriyalar</h1>
     <a class="back-link" routerLink="/admin">← Dashboard</a>
   </div>
 
-  <!-- Add category -->
   <div class="card animate-in animate-in-delay-1" style="margin-bottom:28px;">
     <h2 style="margin-bottom:16px;">➕ Yangi kategoriya</h2>
-    <form class="row" style="gap:12px;" (ngSubmit)="create()">
+    <form ngNativeValidate class="row" style="gap:12px;" (ngSubmit)="create()">
       <input
         id="new-category-input"
-        name="name"
+        name="name" maxlength="50"
         [(ngModel)]="name"
         placeholder="Kategoriya nomi"
         style="flex:1; min-width:200px;"
@@ -33,8 +23,7 @@
     <p class="error">{{error}}</p>
   </div>
 
-  <!-- Categories table -->
-  <div class="card animate-in animate-in-delay-2">
+  <div class="card table-wrap animate-in animate-in-delay-2">
     <h2 style="margin-bottom:20px;">📋 Barcha kategoriyalar</h2>
 
     <div class="empty-state" *ngIf="categories.length === 0">
@@ -58,9 +47,13 @@
             </span>
           </td>
           <td style="font-weight:500; color:var(--text-primary);">
-            🏷️ {{c.name}}
+            <span *ngIf="editingId !== c.id">{{c.name}}</span>
+            <input *ngIf="editingId === c.id" [(ngModel)]="editName" maxlength="50" aria-label="Kategoriya nomi" />
           </td>
           <td style="text-align:right;">
+            <button *ngIf="editingId !== c.id" class="btn secondary" (click)="edit(c)">Tahrirlash</button>
+            <button *ngIf="editingId === c.id" class="btn" (click)="save()">Saqlash</button>
+            <button *ngIf="editingId === c.id" class="btn secondary" (click)="editingId = 0">Bekor qilish</button>
             <button
               class="btn danger"
               style="padding:7px 14px; font-size:0.82rem;"

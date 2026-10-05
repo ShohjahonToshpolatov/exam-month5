@@ -1,25 +1,13 @@
 <div class="container">
-  <!-- Navbar -->
-  <nav class="navbar" style="position: static; margin: -32px -24px 32px; padding: 0 24px; border-radius: 0 0 20px 20px;">
-    <a class="navbar-brand" routerLink="/items">🔍 TopFind</a>
-    <div class="navbar-links">
-      <a class="nav-link" routerLink="/admin">Dashboard</a>
-      <a class="nav-link" routerLink="/admin/categories">Kategoriyalar</a>
-      <a class="nav-link" routerLink="/admin/users" style="color:var(--accent);">Foydalanuvchilar</a>
-    </div>
-  </nav>
-
-  <div class="page-header animate-in">
-    <h1>👥 Foydalanuvchilar</h1>
-    <a class="back-link" routerLink="/admin">← Dashboard</a>
+  <div class="page-header"><div><p class="eyebrow">ADMIN BOSHQARUVI</p><h1>Foydalanuvchilar</h1><p class="muted">Hisoblar va ularning ruxsatlarini boshqaring</p></div></div>
+  <form ngNativeValidate class="search-box row" (ngSubmit)="filter()"><label class="grow">Ism, email yoki telefon<input name="search" [(ngModel)]="search" placeholder="Foydalanuvchini qidiring" /></label><button class="btn" [disabled]="loading">Qidirish</button></form>
+  <p class="error" *ngIf="error">{{error}}</p>
+  <p class="muted" *ngIf="loading">Yuklanmoqda...</p>
+  <div class="card table-wrap" *ngIf="!loading">
+    <table class="table" *ngIf="users.length"><thead><tr><th>Foydalanuvchi</th><th>Telefon</th><th>Rol</th><th>Amallar</th></tr></thead><tbody>
+      <tr *ngFor="let user of users"><td><strong>{{user.full_name}}</strong><p class="muted">{{user.email}}</p></td><td>{{user.phone}}</td><td><span class="badge badge-active">{{user.role}}</span></td><td><div class="row"><button class="btn secondary" [disabled]="user.id === currentId" (click)="changeRole(user)">{{user.role === 'admin' ? 'User qilish' : 'Admin qilish'}}</button><button class="btn danger" [disabled]="user.id === currentId" (click)="remove(user)">O'chirish</button></div></td></tr>
+    </tbody></table>
+    <p class="empty-state" *ngIf="!users.length && !error">Foydalanuvchilar topilmadi</p>
   </div>
-
-  <div class="card animate-in animate-in-delay-1" style="text-align:center; padding:60px 40px;">
-    <div style="font-size:4rem; margin-bottom:20px; filter:drop-shadow(0 0 20px rgba(255,107,157,0.4));">👥</div>
-    <h2>Foydalanuvchilar paneli</h2>
-    <p class="muted mt-8" style="max-width:400px; margin:8px auto 0;">{{message}}</p>
-    <a class="btn pill" style="margin-top:28px;" routerLink="/admin">
-      ← Dashboardga qaytish
-    </a>
-  </div>
+  <div class="pagination"><button class="btn secondary" [disabled]="page === 1 || loading" (click)="prev()">← Oldingi</button><span class="page-num">{{page}}</span><button class="btn secondary" [disabled]="users.length < 10 || loading" (click)="next()">Keyingi →</button></div>
 </div>

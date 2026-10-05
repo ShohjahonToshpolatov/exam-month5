@@ -1,6 +1,14 @@
 import { CanActivateFn, Router } from "@angular/router";
 import { inject } from "@angular/core";
+import { map, catchError, of } from "rxjs";
+import { AuthService } from "../services/auth";
 export const adminGuard: CanActivateFn = () => {
-  try { const user = JSON.parse(localStorage.getItem("user") || "null"); return user?.role === "admin" ? true : inject(Router).createUrlTree(["/items"]); }
-  catch { return inject(Router).createUrlTree(["/items"]); }
+  const auth = inject(AuthService);
+  const router = inject(Router);
+  if (!localStorage.getItem("token"))
+    return router.createUrlTree(["/login"]);
+  return auth.me().pipe(map((response: any) => {
+    auth.saveSession(response);
+    return response.user?.role === "admin" ? true : router.createUrlTree(["/items"]);
+  }), catchError(() => of(router.createUrlTree(["/items"]))));
 };

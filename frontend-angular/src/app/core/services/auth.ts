@@ -1,7 +1,6 @@
 import { Injectable, inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
-
 @Injectable({ providedIn: "root" })
 export class AuthService {
   private http = inject(HttpClient);
@@ -28,9 +27,19 @@ export class AuthService {
     return this.http.get(`${this.api}/me`);
   }
   saveSession(response: any) {
-    if (response?.token) localStorage.setItem("token", response.token);
+    if (response?.token)
+      localStorage.setItem("token", response.token);
     if (response?.user)
       localStorage.setItem("user", JSON.stringify(response.user));
+  }
+  getUser() {
+    try {
+      return JSON.parse(localStorage.getItem("user") || "null");
+    }
+    catch {
+      this.logout();
+      return null;
+    }
   }
   logout() {
     localStorage.removeItem("token");

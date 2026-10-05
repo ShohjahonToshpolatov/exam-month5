@@ -1,16 +1,5 @@
 <div class="container">
-  <!-- Navbar -->
-  <nav class="navbar" style="position: static; margin: -32px -24px 32px; padding: 0 24px; border-radius: 0 0 20px 20px;">
-    <a class="navbar-brand" routerLink="/items">🔍 TopFind</a>
-    <div class="navbar-links">
-      <a class="nav-link" routerLink="/items/create">+ E'lon</a>
-      <a class="nav-link" routerLink="/claims">Da'volarim</a>
-      <a class="nav-link" routerLink="/profile">Profil</a>
-      <a class="nav-link" routerLink="/admin" style="color: var(--warning);">Admin</a>
-    </div>
-  </nav>
 
-  <!-- Hero Header -->
   <div class="page-header animate-in">
     <div>
       <h1>🗺️ E'lonlar</h1>
@@ -21,7 +10,6 @@
     </a>
   </div>
 
-  <!-- Search & Filter -->
   <div class="search-box animate-in animate-in-delay-1">
     <div class="grid grid-3">
       <label style="display:grid; gap:6px; font-size:0.8rem; font-weight:500; color:var(--text-muted); letter-spacing:0.5px; text-transform:uppercase;">
@@ -49,7 +37,7 @@
       </label>
     </div>
     <div class="row mt-16">
-      <button class="btn pill" id="search-btn" (click)="load()">
+      <button class="btn pill" id="search-btn" (click)="filter()">
         🔍 Qidirish
       </button>
       <button class="btn secondary pill" id="reset-btn" (click)="reset()">
@@ -58,16 +46,13 @@
     </div>
   </div>
 
-  <!-- Error -->
   <p class="error" *ngIf="error">{{error}}</p>
 
-  <!-- Loading -->
   <div class="loading-state" *ngIf="loading">
     <div class="spinner"></div>
     <span>Yuklanmoqda...</span>
   </div>
 
-  <!-- Items Grid -->
   <div class="grid grid-3 animate-in animate-in-delay-2" *ngIf="!loading">
     <article
       class="item-card"
@@ -75,7 +60,8 @@
       [routerLink]="['/items', item.id]"
       id="item-{{item.id}}"
     >
-      <!-- Type Badge -->
+      <img *ngIf="item.image_url" class="item-image" [src]="item.image_url" [alt]="item.title" loading="lazy" />
+
       <span
         class="badge"
         [class.badge-lost]="item.type === 'lost'"
@@ -85,7 +71,6 @@
         <span *ngIf="item.type === 'found'">✅ Topilgan</span>
       </span>
 
-      <!-- Card shimmer line -->
       <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(108,99,255,0.5),transparent);opacity:0;transition:0.3s;" class="card-shimmer"></div>
 
       <h3 style="padding-right: 90px;">{{item.title}}</h3>
@@ -103,12 +88,11 @@
         </span>
       </div>
 
-      <button class="btn pill" style="width:100%; font-size:0.85rem; padding:9px 16px;">
+      <button [routerLink]="['/items', item.id]" class="btn pill" style="width:100%; font-size:0.85rem; padding:9px 16px;">
         Ko'rish →
       </button>
     </article>
 
-    <!-- Empty state -->
     <div class="empty-state" *ngIf="items.length === 0" style="grid-column: 1 / -1;">
       <div class="empty-icon">🔍</div>
       <p>Hech qanday e'lon topilmadi</p>
@@ -116,13 +100,12 @@
     </div>
   </div>
 
-  <!-- Pagination -->
   <div class="pagination animate-in animate-in-delay-3">
     <button
       class="btn secondary"
       id="prev-btn"
       (click)="prev()"
-      [disabled]="page === 1"
+      [disabled]="page === 1 || loading"
     >
       ‹ Oldingi
     </button>
@@ -131,7 +114,7 @@
       class="btn secondary"
       id="next-btn"
       (click)="next()"
-      [disabled]="items.length < limit"
+      [disabled]="!hasMore || loading"
     >
       Keyingi ›
     </button>

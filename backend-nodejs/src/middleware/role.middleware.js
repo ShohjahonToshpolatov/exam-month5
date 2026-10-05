@@ -6,9 +6,7 @@ const roleMiddleware = (role) => {
         message: "Sizda bu amalni bajarish huquqi yo'q",
       });
     }
-
     next();
   };
 };
-
 export { roleMiddleware };

@@ -1,2 +1,11 @@
-import {Component,inject} from "@angular/core";import {CommonModule} from "@angular/common";import {AdminService} from "../../../core/services/admin";import {RouterLink} from "@angular/router";
-@Component({selector:"app-dashboard",standalone:true,imports:[CommonModule,RouterLink],templateUrl:"./dashboard.html",styleUrl:"./dashboard.css"})export class Dashboard{private api=inject(AdminService);stats:any;error="";ngOnInit(){this.api.stats().subscribe({next:r=>this.stats=r?.stats||r,error:e=>this.error=e?.error?.message||"Statistika yuklanmadi"})}}
+import { Component, inject } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { AdminService } from "../../../core/services/admin";
+import { RouterLink } from "@angular/router";
+@Component({ selector: "app-dashboard", standalone: true, imports: [CommonModule, RouterLink], templateUrl: "./dashboard.html", styleUrl: "./dashboard.css" })
+export class Dashboard {
+  private api = inject(AdminService);
+  stats: any;
+  error = "";
+  ngOnInit() { this.api.stats().subscribe({ next: r => this.stats = r?.stats || r, error: e => this.error = e?.error?.message || "Statistika yuklanmadi" }); }
+}

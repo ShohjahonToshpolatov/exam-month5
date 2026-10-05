@@ -1,12 +1,13 @@
+import { deleteFiles } from "../helpers/deleteFiles.js";
 const validate = (schema, source = "body") => {
-  return (req, res, next) => {
+  return async (req, res, next) => {
     const { error, value } = schema.validate(req[source], {
       abortEarly: false,
       stripUnknown: true,
       convert: true,
     });
-
     if (error) {
+      await deleteFiles(req.files);
       return res.status(400).json({
         success: false,
         message: "Validatsiya xatosi",
@@ -16,16 +17,8 @@ const validate = (schema, source = "body") => {
         })),
       });
     }
-
-    if (source === "body") {
-      req.body = value;
-    } else {
-      Object.keys(req[source]).forEach((key) => delete req[source][key]);
-      Object.assign(req[source], value);
-    }
-
+    Object.defineProperty(req, source, { value, writable: true, configurable: true });
     next();
   };
 };
-
 export { validate };

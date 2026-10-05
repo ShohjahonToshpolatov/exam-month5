@@ -1,11 +1,4 @@
 <div class="container">
-  <!-- Navbar -->
-  <nav class="navbar" style="position: static; margin: -32px -24px 32px; padding: 0 24px; border-radius: 0 0 20px 20px;">
-    <a class="navbar-brand" routerLink="/items">🔍 TopFind</a>
-    <div class="navbar-links">
-      <a class="nav-link" routerLink="/items">E'lonlar</a>
-    </div>
-  </nav>
 
   <a class="back-link" routerLink="/items">← E'lonlarga qaytish</a>
 
@@ -16,12 +9,12 @@
       <p class="muted">Quyidagi ma'lumotlarni yangilang</p>
     </div>
 
-    <form class="form" (ngSubmit)="submit()">
+    <form ngNativeValidate class="form" (ngSubmit)="submit()">
       <label>
         Sarlavha
         <input
           id="edit-title"
-          name="title"
+          name="title" minlength="5" maxlength="100"
           [(ngModel)]="title"
           placeholder="Buyum sarlavhasi"
           required
@@ -32,7 +25,7 @@
         Tavsif
         <textarea
           id="edit-description"
-          name="description"
+          required name="description" minlength="10" maxlength="1000"
           [(ngModel)]="description"
           placeholder="Batafsil tavsif..."
           style="min-height:120px;"
@@ -43,7 +36,7 @@
         Joylashuv
         <input
           id="edit-location"
-          name="location"
+          name="location" minlength="3" maxlength="150"
           [(ngModel)]="location"
           placeholder="📍 Manzil"
         />
@@ -57,17 +50,9 @@
         </select>
       </label>
 
-      <label>
-        Status
-        <select id="edit-status" name="status" [(ngModel)]="status">
-          <option value="active">🟢 Aktiv</option>
-          <option value="closed">🔴 Yopilgan</option>
-        </select>
-      </label>
-
       <p class="error">{{error}}</p>
 
-      <button id="edit-save-btn" class="btn w-full" type="submit" style="padding:14px;">
+      <button [disabled]="loading || status !== 'active'" id="edit-save-btn" class="btn w-full" type="submit" style="padding:14px;">
         💾 Saqlash
       </button>
     </form>

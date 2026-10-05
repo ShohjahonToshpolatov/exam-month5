@@ -3,42 +3,13 @@ import { authMiddleware } from "../middleware/auth.middleware.js";
 import { validate } from "../middleware/validate.middleware.js";
 import { upload } from "../middleware/upload.middleware.js";
 import { idSchema } from "../validation/common.validate.js";
-import {
-  itemSchema,
-  updateItemSchema,
-  itemFilterSchema,
-} from "../validation/item.validate.js";
-import {
-  createItem,
-  getItems,
-  getItemById,
-  updateItem,
-  closeItem,
-} from "../controller/item.controller.js";
-
+import { itemSchema, updateItemSchema, itemFilterSchema, } from "../validation/item.validate.js";
+import { createItem, getItems, getMyItems, getItemById, updateItem, closeItem, } from "../controller/item.controller.js";
 const router = Router();
-
 router.get("/", validate(itemFilterSchema, "query"), getItems);
+router.get("/my", authMiddleware, getMyItems);
 router.get("/:id", validate(idSchema, "params"), getItemById);
-router.post(
-  "/",
-  authMiddleware,
-  upload.array("images", 5),
-  validate(itemSchema),
-  createItem,
-);
-router.patch(
-  "/:id",
-  authMiddleware,
-  validate(idSchema, "params"),
-  validate(updateItemSchema),
-  updateItem,
-);
-router.patch(
-  "/:id/close",
-  authMiddleware,
-  validate(idSchema, "params"),
-  closeItem,
-);
-
+router.post("/", authMiddleware, upload.array("images", 5), validate(itemSchema), createItem);
+router.patch("/:id", authMiddleware, validate(idSchema, "params"), validate(updateItemSchema), updateItem);
+router.patch("/:id/close", authMiddleware, validate(idSchema, "params"), closeItem);
 export default router;

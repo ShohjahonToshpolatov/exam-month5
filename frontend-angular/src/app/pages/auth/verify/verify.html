@@ -9,7 +9,7 @@
       <p class="subtitle">Emailingizga yuborilgan kodni kiriting</p>
     </div>
 
-    <form class="form" (ngSubmit)="submit()">
+    <form ngNativeValidate class="form" (ngSubmit)="submit()">
       <label>
         Email manzil
         <input
@@ -25,7 +25,7 @@
         Tasdiqlash kodi (6 xona)
         <input
           id="verify-code"
-          name="code"
+          name="code" minlength="6" maxlength="6"
           [(ngModel)]="code"
           maxlength="6"
           placeholder="______"

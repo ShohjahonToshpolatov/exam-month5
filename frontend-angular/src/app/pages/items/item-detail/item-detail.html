@@ -1,18 +1,9 @@
 <div class="container" *ngIf="item">
-  <!-- Navbar -->
-  <nav class="navbar" style="position: static; margin: -32px -24px 32px; padding: 0 24px; border-radius: 0 0 20px 20px;">
-    <a class="navbar-brand" routerLink="/items">🔍 TopFind</a>
-    <div class="navbar-links">
-      <a class="nav-link" routerLink="/items">E'lonlar</a>
-      <a class="nav-link" routerLink="/profile">Profil</a>
-    </div>
-  </nav>
 
   <a class="back-link" routerLink="/items">← E'lonlarga qaytish</a>
 
-  <!-- Item Detail Card -->
   <div class="card animate-in" style="margin-bottom: 24px;">
-    <!-- Header -->
+
     <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom:20px;">
       <div style="flex:1;">
         <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
@@ -37,14 +28,14 @@
       </div>
     </div>
 
-    <!-- Description -->
+    <div class="image-gallery" *ngIf="item.images?.length"><img *ngFor="let image of item.images" [src]="image.image_url" [alt]="item.title" /></div>
+
     <div style="background:var(--glass-1); border:1px solid var(--glass-border); border-radius:var(--radius-md); padding:20px; margin-bottom:20px;">
       <p style="color:var(--text-secondary); line-height:1.8; font-size:0.95rem;">
         {{item.description || 'Tavsif mavjud emas'}}
       </p>
     </div>
 
-    <!-- Owner Info -->
     <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px; padding:14px 18px; background:var(--glass-1); border:1px solid var(--glass-border); border-radius:var(--radius-md);">
       <div style="width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg,var(--primary),var(--secondary)); display:flex;align-items:center;justify-content:center; font-size:1rem; flex-shrink:0;">
         👤
@@ -55,8 +46,7 @@
       </div>
     </div>
 
-    <!-- Actions -->
-    <div class="row">
+    <div class="row" *ngIf="isOwner && item.status === 'active'">
       <a class="btn secondary" id="edit-item-btn" [routerLink]="['/items', item.id, 'edit']">
         ✏️ Tahrirlash
       </a>
@@ -66,12 +56,10 @@
     </div>
   </div>
 
-  <!-- Messages -->
   <p class="error" *ngIf="error">{{error}}</p>
   <p class="success" *ngIf="success">🎉 {{success}}</p>
 
-  <!-- Claims List -->
-  <section class="card animate-in animate-in-delay-1" style="margin-bottom: 24px;">
+  <section *ngIf="isOwner" class="card animate-in animate-in-delay-1" style="margin-bottom: 24px;">
     <h2>🤝 Da'volar</h2>
 
     <div class="empty-state" *ngIf="claimList.length === 0">
@@ -89,9 +77,10 @@
       </div>
 
       <p><strong style="color:var(--text-muted);">Xabar:</strong> {{c.message || 'Xabar yozilmagan'}}</p>
+      <p><a [href]="'tel:' + c.phone">{{c.phone}}</a></p>
       <p *ngIf="c.answer"><strong style="color:var(--text-muted);">Javob:</strong> {{c.answer}}</p>
 
-      <div class="row mt-16">
+      <div class="row mt-16" *ngIf="c.status === 'pending' && item.status === 'active'">
         <button class="btn success" style="font-size:0.85rem; padding:8px 16px;" (click)="approve(c.id)">
           ✅ Tasdiqlash
         </button>
@@ -102,17 +91,16 @@
     </div>
   </section>
 
-  <!-- Submit Claim (for found items) -->
-  <section class="card animate-in animate-in-delay-2" *ngIf="item.type === 'found'">
+  <section class="card animate-in animate-in-delay-2" *ngIf="item.type === 'found' && !isOwner && loggedIn && item.status === 'active'">
     <h2>📝 Da'vo yuborish</h2>
     <p class="muted mb-16">Bu narsa sizniki ekanini isbotlang</p>
 
-    <form class="form" (ngSubmit)="submitClaim()">
+    <form ngNativeValidate class="form" (ngSubmit)="submitClaim()">
       <label>
-        Maxfiy javob
+        {{item.secret_question}}
         <input
           id="claim-answer"
-          name="answer"
+          name="answer" minlength="2" maxlength="50"
           [(ngModel)]="answer"
           placeholder="E'lon egasi bilishi kerak bo'lgan ma'lumot"
           required
@@ -123,7 +111,7 @@
         Xabar
         <textarea
           id="claim-message"
-          name="message"
+          name="message" minlength="0" maxlength="1000"
           [(ngModel)]="message"
           placeholder="Buyum haqida batafsil ma'lumot yozing..."
           style="min-height: 120px;"
@@ -136,8 +124,7 @@
     </form>
   </section>
 
-  <!-- Report Found (for lost items) -->
-  <section class="card animate-in animate-in-delay-2" *ngIf="item.type === 'lost'">
+  <section class="card animate-in animate-in-delay-2" *ngIf="item.type === 'lost' && !isOwner && loggedIn && item.status === 'active'">
     <h2>🎯 Men topdim!</h2>
     <p class="muted mb-16">Bu buyumni topganingizni egasiga xabar bering</p>
 
@@ -157,10 +144,12 @@
       </button>
     </div>
   </section>
+<p *ngIf="!loggedIn" class="card">Xabar yoki da’vo yuborish uchun <a class="back-link" routerLink="/login">tizimga kiring →</a></p>
 </div>
 
-<!-- Loading state -->
-<div class="container" *ngIf="!item">
+<div class="container" *ngIf="!item && error"><p class="error">{{error}}</p><a routerLink="/items" class="btn">E’lonlarga qaytish</a></div>
+
+<div class="container" *ngIf="!item && !error">
   <div class="loading-state" style="min-height: 60vh;">
     <div class="spinner"></div>
     <span>E'lon yuklanmoqda...</span>

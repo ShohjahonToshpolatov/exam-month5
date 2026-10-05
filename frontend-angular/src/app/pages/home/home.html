@@ -1,172 +1,28 @@
-<!-- ===== LANDING PAGE ===== -->
-<div class="landing">
-
-  <!-- Animated 3D Canvas Background -->
-  <div class="canvas-bg">
-    <div class="cube-wrap">
-      <div class="cube"><div class="face front"></div><div class="face back"></div><div class="face left"></div><div class="face right"></div><div class="face top"></div><div class="face bottom"></div></div>
-    </div>
-    <div class="cube-wrap two">
-      <div class="cube"><div class="face front"></div><div class="face back"></div><div class="face left"></div><div class="face right"></div><div class="face top"></div><div class="face bottom"></div></div>
-    </div>
-    <div class="cube-wrap three">
-      <div class="cube"><div class="face front"></div><div class="face back"></div><div class="face left"></div><div class="face right"></div><div class="face top"></div><div class="face bottom"></div></div>
-    </div>
-    <!-- Floating rings -->
-    <div class="ring ring-1"></div>
-    <div class="ring ring-2"></div>
-    <div class="ring ring-3"></div>
-    <!-- Particles -->
-    <div class="particle" style="--x:10%;--y:20%;--d:3s;--s:6px;--c:#6c63ff"></div>
-    <div class="particle" style="--x:80%;--y:15%;--d:4s;--s:4px;--c:#00d9ff"></div>
-    <div class="particle" style="--x:25%;--y:70%;--d:5s;--s:5px;--c:#ff6b9d"></div>
-    <div class="particle" style="--x:70%;--y:80%;--d:3.5s;--s:7px;--c:#00e5a0"></div>
-    <div class="particle" style="--x:50%;--y:30%;--d:2.5s;--s:4px;--c:#6c63ff"></div>
-    <div class="particle" style="--x:90%;--y:50%;--d:6s;--s:5px;--c:#00d9ff"></div>
-    <div class="particle" style="--x:15%;--y:50%;--d:4.5s;--s:3px;--c:#ff6b9d"></div>
-    <div class="particle" style="--x:60%;--y:90%;--d:5.5s;--s:6px;--c:#ffa502"></div>
-    <div class="particle" style="--x:35%;--y:10%;--d:3.2s;--s:4px;--c:#6c63ff"></div>
-    <div class="particle" style="--x:75%;--y:40%;--d:4.8s;--s:5px;--c:#00e5a0"></div>
-  </div>
-
-  <!-- HERO SECTION -->
+<div class="home-page">
   <section class="hero">
-    <!-- Left: Text -->
-    <div class="hero-text">
-      <div class="hero-badge">
-        <span class="badge-dot"></span>
-        Yangi platforma ishga tushdi
-      </div>
-
-      <h1 class="hero-title">
-        <span class="line line-1">Yo'qolgan</span>
-        <span class="line line-2 gradient-text">narsangizni</span>
-        <span class="line line-3">toping 🔍</span>
-      </h1>
-
-      <p class="hero-desc">
-        TopFind — yo'qolgan va topilgan buyumlarni birlashtiruvchi zamonaviy platforma.
-        Tezkor, ishonchli, qulay.
-      </p>
-
-      <div class="hero-actions">
-        <a routerLink="/login" class="btn-hero-primary">
-          <span>Boshlash</span>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <a routerLink="/items" class="btn-hero-ghost">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          E'lonlarni ko'rish
-        </a>
-      </div>
-
-      <div class="hero-stats">
-        <div class="stat">
-          <span class="stat-n">2.4K+</span>
-          <span class="stat-l">E'lonlar</span>
-        </div>
-        <div class="stat-sep"></div>
-        <div class="stat">
-          <span class="stat-n">1.2K+</span>
-          <span class="stat-l">Topildi</span>
-        </div>
-        <div class="stat-sep"></div>
-        <div class="stat">
-          <span class="stat-n">98%</span>
-          <span class="stat-l">Muvaffaqiyat</span>
-        </div>
-      </div>
+    <div class="hero-copy">
+      <div class="hero-label"><span></span> YO'QOLGANLAR TOPILADIGAN JOY</div>
+      <h1>Yo'qoldimi?<br><span>Birga topamiz.</span><i>↗</i></h1>
+      <p>Qadrli buyumlar yo'qolishi mumkin.<br>Ularni topish umidi esa hech qachon.</p>
+      <div class="hero-actions"><a class="btn" routerLink="/items">Qidirishni boshlash <span>↗</span></a><a class="hero-secondary" routerLink="/items/create">Buyum topdim <span>+</span></a></div>
+      <div class="hero-trust"><div class="trust-symbol">✓</div><span>Bepul foydalaning.<br><strong>Yaxshilikni davom ettiring.</strong></span></div>
     </div>
-
-    <!-- Right: 3D Card Mockup -->
-    <div class="hero-visual">
-      <div class="phone-mockup">
-        <div class="phone-screen">
-          <div class="mock-nav">
-            <span class="mock-logo">🔍 TopFind</span>
-            <span class="mock-dot"></span>
-          </div>
-          <div class="mock-card lost">
-            <span class="mock-badge lost-badge">Yo'qolgan</span>
-            <div class="mock-title">iPhone 15 Pro</div>
-            <div class="mock-loc">📍 Toshkent, Chilonzor</div>
-          </div>
-          <div class="mock-card found">
-            <span class="mock-badge found-badge">Topildi ✓</span>
-            <div class="mock-title">Qora sumka</div>
-            <div class="mock-loc">📍 Yunusobod, 17-mavze</div>
-          </div>
-          <div class="mock-card lost">
-            <span class="mock-badge lost-badge">Yo'qolgan</span>
-            <div class="mock-title">Oltin uzuk</div>
-            <div class="mock-loc">📍 Mirzo Ulug'bek</div>
-          </div>
-          <div class="mock-pulse">
-            <div class="pulse-ring"></div>
-            <span>Yangi e'lon!</span>
-          </div>
-        </div>
-        <!-- Glow -->
-        <div class="phone-glow"></div>
-      </div>
-      <!-- Floating labels -->
-      <div class="float-label fl-1">✅ Topildi!</div>
-      <div class="float-label fl-2">🔔 Bildirishnoma</div>
-      <div class="float-label fl-3">⚡ Tezkor</div>
+    <div class="discovery" aria-label="Yo'qolgan buyumlarni qidirish tasviri">
+      <div class="discovery-top"><span><i></i> TOPFIND CONNECT</span><span>01 / 03</span></div>
+      <div class="radar"><div class="radar-ring ring-one"></div><div class="radar-ring ring-two"></div><div class="radar-ring ring-three"></div><div class="radar-cross"></div><div class="radar-center"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></div><span class="radar-point point-one"></span><span class="radar-point point-two"></span></div>
+      <div class="object-card card-key"><div class="object-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><circle cx="17" cy="17" r="10"/><circle cx="15" cy="14" r="2"/><path d="m24 24 16 16m-5-5 5-5m-10 0 5-5"/></svg></div><div><small>KICHIK BUYUM, KATTA AHAMIYAT</small><h3>Kalitlaringiz shu yerdami?</h3><span class="object-tag">Kalitlar & aksessuarlar</span></div></div>
+      <div class="object-card card-bag"><div class="bag-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2"><rect x="10" y="16" width="28" height="25" rx="6"/><path d="M18 17v-5a6 6 0 0 1 12 0v5M17 30h14M17 25h14"/></svg></div><div><small>HAR BUYUMNING O'Z EGASI BOR</small><h3>Yana o'z egasi tomon.</h3></div><span class="match-check">✓</span></div>
+      <div class="discovery-bottom"><span class="signal-bars"><i></i><i></i><i></i><i></i></span> Yaxshilik bizni birlashtiradi <span>↗</span></div>
     </div>
   </section>
-
-  <!-- FEATURES SECTION -->
-  <section class="features">
-    <div class="features-inner">
-      <div class="section-label">Imkoniyatlar</div>
-      <h2 class="section-title">Nima uchun TopFind?</h2>
-
-      <div class="feat-grid">
-        <div class="feat-card" style="--hue: 263">
-          <div class="feat-icon">🚀</div>
-          <h3>Tezkor</h3>
-          <p>Soniyalar ichida e'lon joylashtiring va topilgan narsani egasiga qaytaring</p>
-        </div>
-        <div class="feat-card" style="--hue: 190">
-          <div class="feat-icon">🔐</div>
-          <h3>Xavfsiz</h3>
-          <p>Maxfiy savollar va tasdiqlash tizimi orqali narsangiz faqat egasiga qaytadi</p>
-        </div>
-        <div class="feat-card" style="--hue: 340">
-          <div class="feat-icon">🔔</div>
-          <h3>Bildirishnomalar</h3>
-          <p>Da'vo yuborilganda darhol xabar olasiz va harakatlarni boshqarasiz</p>
-        </div>
-        <div class="feat-card" style="--hue: 145">
-          <div class="feat-icon">🗺️</div>
-          <h3>Joylashuv</h3>
-          <p>Buyum topilgan joylashuvni ko'rsating va tezroq toping</p>
-        </div>
-      </div>
+  <section class="category-strip" aria-label="Buyum kategoriyalari"><span>IZLASHNI BOSHLANG</span><a routerLink="/items">Telefonlar <span>↗</span></a><a routerLink="/items">Hujjatlar <span>↗</span></a><a routerLink="/items">Kalitlar <span>↗</span></a><a routerLink="/items">Sumkalar <span>↗</span></a><a routerLink="/items">Boshqa buyumlar <span>↗</span></a></section>
+  <section class="how-section">
+    <div class="section-heading"><div><p class="eyebrow">ODDIY. QULAY. INSONIY.</p><h2>Topishning oson yo'li.</h2></div><p>Bir necha qadam bilan<br>kimningdir kunini yaxshilang.</p></div>
+    <div class="steps-grid">
+      <a class="step-card" routerLink="/items"><div class="step-top"><span>01 / QIDIRING</span><span class="step-arrow">↗</span></div><div class="step-art search-art">⌕</div><h3>Izlaganingizni toping.</h3><p>Buyum nomi va joylashuvi bo'yicha e'lonlarni ko'rib chiqing.</p></a>
+      <a class="step-card featured" routerLink="/items/create"><div class="step-top"><span>02 / E'LON BERING</span><span class="step-arrow">↗</span></div><div class="step-art">＋</div><h3>Bir xabar yetarli.</h3><p>Topilgan yoki yo'qolgan buyum haqida e'lon joylashtiring.</p></a>
+      <a class="step-card" routerLink="/claims"><div class="step-top"><span>03 / BOG'LANING</span><span class="step-arrow">↗</span></div><div class="step-art">✓</div><h3>Quvonchni qaytaring.</h3><p>Da'volar orqali egasi bilan bog'laning va buyumni qaytaring.</p></a>
     </div>
   </section>
-
-  <!-- CTA SECTION -->
-  <section class="cta-section">
-    <div class="cta-inner">
-      <div class="cta-glow"></div>
-      <h2>Boshlashga tayyormisiz?</h2>
-      <p>Bepul ro'yxatdan o'ting va platformadan foydalaning</p>
-      <div class="cta-buttons">
-        <a routerLink="/register" class="btn-hero-primary">
-          Ro'yxatdan o'tish
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-        <a routerLink="/login" class="btn-hero-ghost">Kirish</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="landing-footer">
-    <span class="footer-logo">🔍 TopFind</span>
-    <span>© 2026 — Barcha huquqlar himoyalangan</span>
-  </footer>
-
+  <section class="home-cta"><div><p class="eyebrow">YAXSHILIK UZOQDA EMAS</p><h2>Siz topgan buyum.<br>Kimningdir katta quvonchi.</h2></div><a routerLink="/items/create" class="cta-link" aria-label="E'lon berish">↗</a></section>
 </div>

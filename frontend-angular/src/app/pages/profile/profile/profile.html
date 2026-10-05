@@ -1,22 +1,16 @@
 <div class="container">
-  <!-- Navbar -->
-  <nav class="navbar" style="position: static; margin: -32px -24px 32px; padding: 0 24px; border-radius: 0 0 20px 20px;">
-    <a class="navbar-brand" routerLink="/items">🔍 TopFind</a>
-    <div class="navbar-links">
-      <a class="nav-link" routerLink="/items">E'lonlar</a>
-      <a class="nav-link" routerLink="/claims">Da'volarim</a>
-    </div>
-  </nav>
 
+  <p class="error" *ngIf="error">{{error}}</p>
+  <p *ngIf="loading" class="muted">Yuklanmoqda...</p>
   <div class="page-header animate-in">
     <h1>👤 Profil</h1>
     <a class="back-link" routerLink="/items">← E'lonlar</a>
   </div>
 
   <div class="grid grid-2 animate-in animate-in-delay-1" style="align-items:start;">
-    <!-- User Info Card -->
+
     <div class="card">
-      <!-- Avatar -->
+
       <div style="display:flex; align-items:center; gap:20px; margin-bottom:28px; padding-bottom:24px; border-bottom:1px solid var(--glass-border);">
         <div class="profile-avatar">
           {{user?.full_name?.[0]?.toUpperCase() || '?'}}
@@ -58,11 +52,10 @@
       </button>
     </div>
 
-    <!-- My Items Card -->
     <div class="card">
       <h2 style="margin-bottom:20px;">📦 Mening E'lonlarim</h2>
 
-      <div class="empty-state" *ngIf="myItems.length === 0">
+      <div class="empty-state" *ngIf="!loading && !error && myItems.length === 0">
         <div class="empty-icon">📭</div>
         <p>Hali e'lonlar yo'q</p>
         <a class="btn pill" style="margin-top:16px; font-size:0.85rem;" routerLink="/items/create">

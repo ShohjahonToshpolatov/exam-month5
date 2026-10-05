@@ -14,27 +14,41 @@ export class Categories {
   categories: any[] = [];
   name = "";
   error = "";
+  editingId = 0;
+  editName = "";
   load() {
+    this.error = "";
     this.api
       .list()
       .subscribe({
-        next: (r) => (this.categories = r?.categories || r || []),
-        error: (e) =>
-          (this.error = e?.error?.message || "Kategoriyalar yuklanmadi"),
-      });
+      next: (r) => (this.categories = r?.categories || r || []),
+      error: (e) => (this.error = e?.error?.message || "Kategoriyalar yuklanmadi"),
+    });
   }
   ngOnInit() {
     this.load();
   }
   create() {
-    if (!this.name.trim()) return;
+    if (!this.name.trim())
+      return;
     this.api.create({ name: this.name.trim() }).subscribe({
       next: () => {
         this.name = "";
         this.load();
       },
-      error: (e) =>
-        (this.error = e?.error?.message || "Kategoriya yaratilmadi"),
+      error: (e) => (this.error = e?.error?.message || "Kategoriya yaratilmadi"),
+    });
+  }
+  edit(category: any) {
+    this.editingId = category.id;
+    this.editName = category.name;
+  }
+  save() {
+    if (!this.editName.trim())
+      return;
+    this.api.update(this.editingId, { name: this.editName.trim() }).subscribe({
+      next: () => { this.editingId = 0; this.load(); },
+      error: e => this.error = e.error.message
     });
   }
   remove(id: number) {
@@ -42,9 +56,8 @@ export class Categories {
       this.api
         .delete(id)
         .subscribe({
-          next: () => this.load(),
-          error: (e) =>
-            (this.error = e?.error?.message || "Kategoriya ochirilmadi"),
-        });
+        next: () => this.load(),
+        error: (e) => (this.error = e?.error?.message || "Kategoriya ochirilmadi"),
+      });
   }
 }

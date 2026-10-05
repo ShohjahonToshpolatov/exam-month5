@@ -3,7 +3,6 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import { AuthService } from "../../../core/services/auth";
-
 @Component({
   selector: "app-register",
   standalone: true,
@@ -14,30 +13,30 @@ import { AuthService } from "../../../core/services/auth";
 export class Register {
   private auth = inject(AuthService);
   private router = inject(Router);
-
   full_name = "";
   email = "";
   phone = "";
   password = "";
   error = "";
-
-  // UI state
+  loading = false;
   showPass = false;
   nameFocused = false;
   emailFocused = false;
   phoneFocused = false;
   passFocused = false;
-
   submit() {
+    if (this.loading)
+      return;
+    this.loading = true;
     this.error = "";
     this.auth.register({
       full_name: this.full_name,
       email: this.email,
-      phone: this.phone,
+      phone: this.phone.replace(/[\s()-]/g, ""),
       password: this.password
     }).subscribe({
       next: () => this.router.navigate(["/verify"], { queryParams: { email: this.email } }),
-      error: e => this.error = e?.error?.message || "Ro'yxatdan o'tishda xatolik"
+      error: e => { this.error = e.error.message; this.loading = false; }
     });
   }
 }
